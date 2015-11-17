@@ -1,7 +1,7 @@
 # Java_Chess
 
 This application is a chess, written in java. It's free to use and share it. Commercial use is restricted.
-<br><br>Note: This is a technical README! If you want to know the ches rules, have a look at this: https://en.wikipedia.org/wiki/Rules_of_chess
+<br><br>Note: This is a technical README! If you want to know the chess rules, have a look at this: https://en.wikipedia.org/wiki/Rules_of_chess
 
 ---------------------------------
 <h2>The Main() class app.java</h2>
@@ -82,6 +82,38 @@ Border secondGridLayoutCenterBorder = BorderFactory.createEmptyBorder(0,
 		180, 0, 180);
 ```
 Also here, we have the two names of the players in the top right an left corners and the timer right in the middle. In a square there are 8x8 buttons, each with an event handler. By clicking on them you select a coordinate and move a figure in a two dimensional array. Of course this only happens if the move was validated first. On the bottom of the window we have three  buttons: A button for the castlings, a button to suggest a draw and one to surrender.
+
+<h2>Package figures.check</h2>
+This package contains the classes which validate moves. By calling each classes check() method, they return true if the move is valid, or false if not. Basically they check for the right color, the right range, the right direction and the right aim. Also it is checked if nothing is in between the figure and the aim. If the king is checked and you dont change this with your move, the move() method returns false too.
+<br>If this method returns false, the move will be undone in Game.java in method aTurn(). This is also the main computer class which handles the full game, once Settings.java was closed.
+
+<h2>KingCheck.java</h2>
+```Java
+// -------------------------------------------------------------
+// DETECTS THE KING
+// -------------------------------------------------------------
+
+for (int y = 0; y < 8; y = y + 1) {
+
+	for (int x = 0; x < 8; x = x + 1) {
+
+		if (String.valueOf(getFigure(x, y)).contains(
+				"Figures.Figures.King")
+				&& getFigure(x, y).getColor() == getColorToCheck()) {
+
+			setxCoordinate(x);
+			setyCoordinate(y);
+
+			x = 8;
+			y = 8;
+
+		}
+
+	}
+
+}
+```
+This class is there to check, wether the king of current player is checked. First of all it has to detect, where the king stands. This happens in a doubled for loop. Then it searches in every direction away from the king for an enemies figure. He is not checked if: The end of the game board is reached or a figure of the own color stands in between the other.
 
 <br><br><strong>This is just a short introduction! For more informations have a look into the Java Documentation.</strong>
 
