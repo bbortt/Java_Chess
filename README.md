@@ -1,4 +1,4 @@
-# Java_Chess
+# Chess
 
 This application is a chess, written in java. It's free to use and share it. Commercial use is restricted.
 <br><br>Note: This is a technical README! If you want to learn the chess rules, have a look at this: https://en.wikipedia.org/wiki/Rules_of_chess
