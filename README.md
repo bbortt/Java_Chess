@@ -1,7 +1,7 @@
 # Java_Chess
 
 This application is a chess, written in java. It's free to use and share it. Commercial use is restricted.
-<br><br>Note: This is a technical README! If you want to know the chess rules, have a look at this: https://en.wikipedia.org/wiki/Rules_of_chess
+<br><br>Note: This is a technical README! If you want to learn the chess rules, have a look at this: https://en.wikipedia.org/wiki/Rules_of_chess
 
 ---------------------------------
 
@@ -17,7 +17,7 @@ public static void main(String[] args) {
 
 }
 ```
-It just calles an instanze of Settings.java. This is the first GUI class where the users have to input their names and chose a maximal game time. No more variables or instanzes are created or saved in this class. Settings.java handles the start of a new game.
+It just creates an instance of Settings.java. This is the first GUI class where the users have to input their names and chose a maximal game time. No more variables or instanzes are created or saved in this class. Settings.java handles the start of a new game.
 
 <h2>Settings.java</h2>
 ```Java
@@ -49,7 +49,7 @@ Border fourthPanelTopBorder = BorderFactory.createEmptyBorder(75, 50, 100,
 Border fourthPanelBottomBorder = BorderFactory.createEmptyBorder(10, 100,
 		10, 100);
 ```
-The layout looks quite difficult, but is very easy once you've seen it. There are two JTextFields (not in the layout) where the users can input their name. Further there is a JSlider which represents the timer. As you chose 0 as time, you will have an endless game (at least until someone got checked).
+The layout looks quite difficult, but is very easy once you've seen it. There are two JTextFields (not shown here), where the users can input their names. Further there is a JSlider which represents the timer. As you chose 0 as time, you will have an endless game (at least until someone got checked).
 
 <h2>ChessBoard.java</h2>
 ```Java
@@ -137,7 +137,7 @@ public void mouseClicked(MouseEvent e) {
 }
 ```
 <h2>Figure.move</h2>
-As soon as fromSelectedJButton:int and toSelectedJButton:int are set, the move gets validated by calling the move() method. Note: An Exception.NullPointerException could be thrown if PlayerDatas or Figure[][] are set to null!
+As soon as fromSelectedJButton:int[] and toSelectedJButton:int[] are set, the move gets validated by calling the move() method. Note: An Exception.NullPointerException could be thrown if PlayerDatas or Figure[][] are set to null!
 ```Java
 /**
  * move() - Actualizes data with current game informations, then checks if
@@ -165,8 +165,8 @@ public abstract Boolean move(int currentX, int currentY, int toX, int toY,
 ```
 
 <h2>Package figures.check</h2>
-This package contains the classes which validate moves. By calling each classes check() method, they return true if the move is valid, or false if not. Basically they check for the right color, the right range, the right direction and the right aim. Also it is checked if nothing is in between the figure and the aim. If the king is checked and you dont change this with your move, the move() method returns false too.
-<br>If this method returns false, the move will be undone in Game.java in method aTurn(). This is also the main computer class which handles the full game, once Settings.java was closed.
+This package contains the classes which validate moves. By calling each classes check() method, they return true if the move is valid, or false if not. Basically they check for the right color, the right range, the right direction and the right aim. Also it is checked if nothing is in between the figure and the aim. If the king is checked and you do not change this with your move, the move() method returns false too.
+<br>If this method returns false, the move will be undone!
 
 <h2>KingCheck.java</h2>
 ```Java
@@ -194,7 +194,7 @@ for (int y = 0; y < 8; y = y + 1) {
 
 }
 ```
-This class is there to check, wether the king of current player is checked. First of all it has to detect, where the king stands. This happens in a doubled for loop. Then it searches in every direction away from the king for an enemies figure. He is not checked if: The end of the game board is reached or a figure of the own color stands in between the other.
+This class is there to check if the king of current player is checked. First of all it has to detect, where the king stands. This happens in a doubled "for" loop. Next it searches in every direction away from the king for an enemies figure. He is not checked if: The end of the game board is reached or a figure of the own color stands in between the other.
 
 <br><br><strong>This is just a short introduction! For more informations have a look into the Java Documentation.</strong>
 
