@@ -9,6 +9,8 @@ import figures.check.CheckHorizontal;
 import figures.check.CheckVertical;
 
 /**
+ * This is a bishop. Handles ever move of its self. Also implements kill()
+ * method.
  * 
  * @author Timon Borter
  * 
@@ -24,7 +26,7 @@ public class Queen extends Figure {
 	CheckVertical checkVertical;
 
 	/**
-	 * Queen() - On creation sets color, range and turn counter
+	 * On creation sets color, range and turn counter.
 	 * 
 	 * @param color
 	 *            Requires the figures color
@@ -51,8 +53,8 @@ public class Queen extends Figure {
 	}
 
 	/**
-	 * move() - Actualizes data with current game informations, then checks if
-	 * the step is valid
+	 * Actualizes data with current game informations, then checks if the step
+	 * is valid.
 	 * 
 	 * @param currentX
 	 *            The current x-coordinate (which the player selected)

@@ -22,6 +22,8 @@ import javax.swing.border.Border;
 import dataBase.PlayerDatas;
 
 /**
+ * This is the GUI which shows the settings. It implements different methods
+ * like create the layout check the inputs and start a new game.
  * 
  * @author Timon Borter
  * 
@@ -117,7 +119,7 @@ public class Settings extends JFrame {
 	}
 
 	/**
-	 * Settings() - The GUI for the settings
+	 * The GUI for the settings.
 	 * 
 	 * @param playerDatas
 	 *            Requires PlayerDatas to save names and time
@@ -153,7 +155,7 @@ public class Settings extends JFrame {
 	}
 
 	/**
-	 * createGUI() - Creates the GUI's layout
+	 * Creates the GUI's layout.
 	 */
 	private void createGUI() {
 
@@ -217,7 +219,7 @@ public class Settings extends JFrame {
 	}
 
 	/**
-	 * fillSettings() - fills the layout with contents
+	 * Fills the layout with contents.
 	 */
 	private void fillSettings() {
 
@@ -273,8 +275,7 @@ public class Settings extends JFrame {
 	}
 
 	/**
-	 * checkStart() - Checks if every input is done, safes the datas and starts
-	 * the game then
+	 * Checks if every input is done, safes the data and starts the game then.
 	 */
 	private void checkStart() {
 

@@ -13,6 +13,8 @@ import figures.check.CheckVertical;
 import gui.ChessBoard;
 
 /**
+ * This is a king. Handles ever move of its self. Also implements kill()
+ * method.
  * 
  * @author Timon Borter
  * 
@@ -28,7 +30,7 @@ public class King extends Figure {
 	CheckVertical checkVertical;
 
 	/**
-	 * King() - On creation sets color, range and turn counter
+	 * On creation sets color, range and turn counter.
 	 * 
 	 * @param color
 	 *            Requires the figures color
@@ -55,8 +57,8 @@ public class King extends Figure {
 	}
 
 	/**
-	 * move() - Actualizes data with current game informations, then checks if
-	 * the step is valid
+	 * Actualizes data with current game informations, then checks if the step
+	 * is valid.
 	 * 
 	 * @param currentX
 	 *            The current x-coordinate (which the player selected)

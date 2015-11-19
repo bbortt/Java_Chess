@@ -4,7 +4,7 @@ import dataBase.PlayerDatas;
 import figures.Figure;
 
 /**
- * 
+ * This class checks whether a knights move is valid or not.
  * @author Timon Borter
  * 
  */
@@ -149,7 +149,7 @@ public class CheckKnight {
 	}
 
 	/**
-	 * actualize() - Actualizes all variables with current game informations
+	 * Actualizes all variables with current game informations.
 	 * 
 	 * @param currentX
 	 *            The current x-coordinate (which the player selected)
@@ -187,7 +187,7 @@ public class CheckKnight {
 	}
 
 	/**
-	 * check() - Checks the figures move, returns true if he is valid
+	 * Checks the figures move, returns true if it is valid.
 	 * 
 	 * @return Returns true if the move of the knight is valid
 	 */

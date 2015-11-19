@@ -8,6 +8,7 @@ import figures.check.CheckHorizontal;
 import figures.check.CheckVertical;
 
 /**
+ * This is a rook. Handles ever move of its self. Also implements kill() method.
  * 
  * @author Timon Borter
  * 
@@ -22,7 +23,7 @@ public class Rook extends Figure {
 	CheckVertical checkVertical;
 
 	/**
-	 * Rook() - On creation sets color, range and turn counter
+	 * On creation sets color, range and turn counter.
 	 * 
 	 * @param color
 	 *            Requires the figures color
@@ -48,8 +49,8 @@ public class Rook extends Figure {
 	}
 
 	/**
-	 * move() - Actualizes data with current game informations, then checks if
-	 * the step is valid
+	 * Actualizes data with current game informations, then checks if the step
+	 * is valid.
 	 * 
 	 * @param currentX
 	 *            The current x-coordinate (which the player selected)

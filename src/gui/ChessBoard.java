@@ -24,11 +24,14 @@ import javax.swing.border.LineBorder;
 
 import main.Game;
 import dataBase.PlayerDatas;
+import figures.check.CastlingCheck;
 
 /**
+ * This is the GUI which shows the game board. It implements different methods
+ * like create the game board with buttons and event handlers.
  * 
  * @author Timon Borter
- *
+ * 
  */
 public class ChessBoard extends JFrame {
 
@@ -90,6 +93,7 @@ public class ChessBoard extends JFrame {
 	private JButton[][] fields = new JButton[8][8];
 	private PlayerDatas playerDatas;
 	private Game game;
+	private CastlingCheck castlingCheck;
 
 	// -------------------------------------------------------------
 	// PUBLIC SETTERS AND GETTERS
@@ -149,8 +153,20 @@ public class ChessBoard extends JFrame {
 
 	}
 
+	public CastlingCheck getCastlingCheck() {
+
+		return this.castlingCheck;
+
+	}
+
+	public void setCastlingCheck(CastlingCheck castlingCheck) {
+
+		this.castlingCheck = castlingCheck;
+
+	}
+
 	/**
-	 * ChessBoard() - The GUI for the match
+	 * The GUI for the match.
 	 * 
 	 * @param playerDatas
 	 *            Requires PlayerDatas to display names and time
@@ -190,10 +206,16 @@ public class ChessBoard extends JFrame {
 		setGame(new Game(getPlayerDatas(), getAllFields(), labelNamePlayer1,
 				labelTimeTillEnd, labelNamePlayer2));
 
+		// -------------------------------------------------------------
+		// CASTS CASTLINGCHECK
+		// -------------------------------------------------------------
+
+		setCastlingCheck(new CastlingCheck(getGame()));
+
 	}
 
 	/**
-	 * createGUI() - Creates the GUI's layout
+	 * Creates the GUI's layout.
 	 */
 	private void createGUI() {
 		// -------------------------------------------------------------
@@ -265,7 +287,7 @@ public class ChessBoard extends JFrame {
 	}
 
 	/**
-	 * fillChessBoard() - Fills the layout with contents
+	 * Fills the layout with contents.
 	 */
 	public void fillChessBoard() {
 
@@ -360,11 +382,11 @@ public class ChessBoard extends JFrame {
 
 				if (response == JOptionPane.YES_OPTION) {
 
-					getGame().leftCastling();
+					getCastlingCheck().leftCastling();
 
 				} else {
 
-					getGame().rightCastling();
+					getCastlingCheck().rightCastling();
 
 				}
 
@@ -434,7 +456,7 @@ public class ChessBoard extends JFrame {
 	}
 
 	/**
-	 * createNewButton() - Creates a new button with MouseListener()
+	 * Creates a new button with MouseListener().
 	 * 
 	 * @param name
 	 *            Requires the fields name, constructed out of his coordinates

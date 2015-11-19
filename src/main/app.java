@@ -4,6 +4,8 @@ import gui.Settings;
 import dataBase.PlayerDatas;
 
 /**
+ * This is the very first class with the main(String[] args) method. It starts
+ * an instance of Settings.java.
  * 
  * @author Timon Borter
  * @version 2.0
@@ -24,7 +26,7 @@ public class app {
 	static PlayerDatas playerDatas = new PlayerDatas();
 
 	/**
-	 * main() - Main method to call the first GUI
+	 * Main method to call the first GUI.
 	 * 
 	 * @param args
 	 *            Default parameters

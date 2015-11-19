@@ -3,6 +3,9 @@ package dataBase;
 import java.awt.Color;
 
 /**
+ * This class handles all data like names, color and time for each player. If
+ * any other class wants to know something about the players, it has to call a
+ * getter of this class.
  * 
  * @author Timon Borter
  * 

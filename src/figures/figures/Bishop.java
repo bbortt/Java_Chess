@@ -7,6 +7,8 @@ import figures.Figure;
 import figures.check.CheckCross;
 
 /**
+ * This is a bishop. Handles ever move of its self. Also implements kill()
+ * method.
  * 
  * @author Timon Borter
  * 
@@ -45,8 +47,8 @@ public class Bishop extends Figure {
 	}
 
 	/**
-	 * move() - Actualizes data with current game informations, then checks if
-	 * the step is valid
+	 * Actualizes data with current game informations, then checks if the step
+	 * is valid.
 	 * 
 	 * @param currentX
 	 *            The current x-coordinate (which the player selected)
@@ -89,7 +91,7 @@ public class Bishop extends Figure {
 	}
 
 	/**
-	 * kill() - Called if the figure gets slain
+	 * Called if the figure gets slain.
 	 * 
 	 * @param nameOfPlayer
 	 *            Required for JOptionPane.showMessageDialog()

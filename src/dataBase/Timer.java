@@ -9,6 +9,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
+ * This class runs in an asynchronous task which sleeps for one second and then
+ * counts -1 to the PlayerDatas.getTimer() for each player. It also handles the
+ * event of out ran time.
  * 
  * @author Timon Borter
  * 
@@ -47,8 +50,8 @@ public class Timer {
 	}
 
 	/**
-	 * Timer() - Starts new asynchronous thread which runs the timer. Sleeps for
-	 * one second and counts timer -1. If time runs out, handles the event.
+	 * Starts new asynchronous thread which runs the timer. Sleeps for one
+	 * second and counts timer -1. If time runs out, handles the event.
 	 * 
 	 * @param playerDatas
 	 *            Requires the PlayerDatas to actualize the timer

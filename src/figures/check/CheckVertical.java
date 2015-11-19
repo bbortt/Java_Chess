@@ -4,6 +4,7 @@ import dataBase.PlayerDatas;
 import figures.Figure;
 
 /**
+ * This class checks whether a vertical move is valid or not.
  * 
  * @author Timon Borter
  * 
@@ -149,7 +150,7 @@ public class CheckVertical {
 	}
 
 	/**
-	 * actualize() - Actualizes all variables with current game informations
+	 * Actualizes all variables with current game informations.
 	 * 
 	 * @param currentX
 	 *            The current x-coordinate (which the player selected)
@@ -187,7 +188,7 @@ public class CheckVertical {
 	}
 
 	/**
-	 * check() - Checks the figures move, returns true if he is valid
+	 * Checks the figures move, returns true if it is valid.
 	 * 
 	 * @return Returns true if the move vertical is valid
 	 */

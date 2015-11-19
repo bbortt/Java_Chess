@@ -5,6 +5,8 @@ import java.awt.Color;
 import dataBase.PlayerDatas;
 
 /**
+ * This is an abstract super class for each figure. Variables and methods
+ * (move() and kill()) are defined here.
  * 
  * @author Timon Borter
  * 
@@ -71,8 +73,8 @@ public abstract class Figure {
 	}
 
 	/**
-	 * move() - Actualizes data with current game informations, then checks if
-	 * the step is valid
+	 * Actualizes data with current game informations, then checks if the step
+	 * is valid.
 	 * 
 	 * @param currentX
 	 *            The current x-coordinate (which the player selected)
@@ -95,7 +97,7 @@ public abstract class Figure {
 			PlayerDatas playerDatas, Figure[][] figures) throws Exception;
 
 	/**
-	 * kill() - Called if the figure gets slain
+	 * Called if the figure gets slain.
 	 * 
 	 * @param nameOfPlayer
 	 *            Required for JOptionPane.showMessageDialog()

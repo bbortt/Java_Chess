@@ -5,6 +5,7 @@ import java.awt.Color;
 import figures.Figure;
 
 /**
+ * This class checks whether a king is checked or not.
  * 
  * @author Timon Borter
  * 
@@ -85,7 +86,7 @@ public class KingCheck {
 	}
 
 	/**
-	 * check() - Checks if someone's king is checked
+	 * Checks if someone's king is checked.
 	 * 
 	 * @param colorToCheck
 	 *            The color of the player to check

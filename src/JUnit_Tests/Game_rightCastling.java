@@ -2,6 +2,7 @@ package JUnit_Tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import figures.check.CastlingCheck;
 import gui.ChessBoard;
 
 import java.awt.Color;
@@ -24,6 +25,7 @@ public class Game_rightCastling {
 	private PlayerDatas playerDatas;
 	private ChessBoard chessBoard;
 	private Game game;
+	private CastlingCheck castlingCheck;
 
 	private PlayerDatas getPlayerDatas() {
 
@@ -61,6 +63,18 @@ public class Game_rightCastling {
 
 	}
 
+	public CastlingCheck getcCastlingCheck() {
+
+		return this.castlingCheck;
+
+	}
+
+	public void setCastlingCheck(CastlingCheck castlingCheck) {
+
+		this.castlingCheck = castlingCheck;
+
+	}
+
 	// -------------------------------------------------------------
 	// SET UP
 	// -------------------------------------------------------------
@@ -83,6 +97,9 @@ public class Game_rightCastling {
 				null, null, null));
 		getGame().defaultSetUp();
 
+		// INITALIZE CASTLING CLASS
+		setCastlingCheck(new CastlingCheck(getGame()));
+
 	}
 
 	// -------------------------------------------------------------
@@ -103,7 +120,7 @@ public class Game_rightCastling {
 		// KING: System.out.println(getGame().getFigure(3, 7).getClass());
 
 		// TRY TO RUN CASTLING
-		getGame().rightCastling();
+		getcCastlingCheck().rightCastling();
 
 		// IF CASTLING WAS RUNNED, CHECKSUMMS ARE BOTH AT 20 --> THEY SHOULD
 		assertTrue("Castling could be executed.", getGame().getPlayerDatas()
@@ -129,7 +146,7 @@ public class Game_rightCastling {
 		getGame().getFigure(7, 7).setColor(Color.BLACK);
 
 		// TRY TO RUN CASTLING
-		getGame().rightCastling();
+		getcCastlingCheck().rightCastling();
 
 		// IF CASTLING WAS RUNNED, CHECKSUMMS ARE BOTH AT 20 --> THEY SHOULDNT
 		assertFalse("Castling could not be executed.", getGame()
@@ -155,7 +172,7 @@ public class Game_rightCastling {
 		getGame().getFigure(7, 7).setTurnCounter(1);
 
 		// TRY TO RUN CASTLING
-		getGame().rightCastling();
+		getcCastlingCheck().rightCastling();
 
 		// IF CASTLING WAS RUNNED, CHECKSUMMS ARE BOTH AT 20 --> THEY SHOULDNT
 		assertFalse("Castling could not be executed.", getGame()
@@ -178,7 +195,7 @@ public class Game_rightCastling {
 		// KING: System.out.println(getGame().getFigure(3, 7).getClass());
 
 		// TRY TO RUN CASTLING
-		getGame().rightCastling();
+		getcCastlingCheck().rightCastling();
 
 		// IF CASTLING WAS RUNNED, CHECKSUMMS ARE BOTH AT 20 --> THEY SHOULDNT
 		assertFalse("Castling could not be executed.", getGame()
@@ -192,7 +209,7 @@ public class Game_rightCastling {
 	// -------------------------------------------------------------
 
 	/**
-	 * tearDown() - Unbinds the test datas
+	 * tearDown() - Unbinds the test data
 	 */
 	@After
 	public void tearDown() {
