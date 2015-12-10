@@ -24,6 +24,7 @@ import javax.swing.border.LineBorder;
 
 import main.Game;
 import dataBase.PlayerDatas;
+import figures.Figure;
 import figures.check.CastlingCheck;
 
 /**
@@ -75,9 +76,6 @@ public class ChessBoard extends JFrame {
 	// CONTENTS
 	// -------------------------------------------------------------
 
-	JLabel figuresPlayer1 = new JLabel();
-	JLabel figuresPlayer2 = new JLabel();
-
 	JLabel labelNamePlayer1 = new JLabel();
 	JLabel labelTimeTillEnd = new JLabel();
 	JLabel labelNamePlayer2 = new JLabel();
@@ -96,88 +94,76 @@ public class ChessBoard extends JFrame {
 	private CastlingCheck castlingCheck;
 
 	// -------------------------------------------------------------
-	// PUBLIC SETTERS AND GETTERS
+	// REQUIRED GETTERS AND SETTERS
 	// -------------------------------------------------------------
 
-	public static JFrame getMainFrame() {
+	/**
+	 * Required to get a specific JButton
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @return The JButton at the specified coordinates
+	 */
+	public JButton getField(int x, int y) {
 
-		return firstBorderLayoutFrame;
-
-	}
-
-	public JButton[][] getAllFields() {
-
-		return this.fields;
-
-	}
-
-	public void setAllFields(JButton[][] fields) {
-
-		this.fields = fields;
+		return this.fields[x][y];
 
 	}
 
-	public JButton getField(int i, int j) {
+	/**
+	 * Required to set a specific JButton
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @param field
+	 *            The specific JButton
+	 */
+	public void setField(int x, int y, JButton field) {
 
-		return this.fields[i][j];
-
-	}
-
-	public void setField(int i, int j, JButton field) {
-
-		this.fields[i][j] = field;
-
-	}
-
-	public PlayerDatas getPlayerDatas() {
-
-		return this.playerDatas;
+		this.fields[x][y] = field;
 
 	}
 
-	public void setPlayerDatas(PlayerDatas playerDatas) {
-
-		this.playerDatas = playerDatas;
-
-	}
-
+	/**
+	 * Required to get the main instance of the game
+	 * 
+	 * @return The main Game
+	 */
 	public Game getGame() {
 
 		return this.game;
 
 	}
 
+	/**
+	 * Required to set the main instance of the game
+	 * 
+	 * @param game
+	 *            The main Game
+	 */
 	public void setGame(Game game) {
 
 		this.game = game;
 
 	}
 
-	public CastlingCheck getCastlingCheck() {
-
-		return this.castlingCheck;
-
-	}
-
-	public void setCastlingCheck(CastlingCheck castlingCheck) {
-
-		this.castlingCheck = castlingCheck;
-
-	}
-
 	/**
 	 * The GUI for the match.
 	 * 
-	 * @param playerDatas
+	 * @param givenPlayerDatas
 	 *            Requires PlayerDatas to display names and time
 	 */
-	public ChessBoard(PlayerDatas playerDatas) {
+	public ChessBoard(PlayerDatas givenPlayerDatas, Figure[][] givenFigures) {
 
 		// -------------------------------------------------------------
 		// SAVE THE NEW PLAYER DATAS (CREATED IN app.java)
 		// -------------------------------------------------------------
 
-		setPlayerDatas(playerDatas);
+		playerDatas = givenPlayerDatas;
 
 		// -------------------------------------------------------------
 		// CREATES THE FRAME
@@ -189,7 +175,7 @@ public class ChessBoard extends JFrame {
 		// ADDS CONTENTS
 		// -------------------------------------------------------------
 
-		this.fillChessBoard();
+		fillChessBoard();
 
 		// -------------------------------------------------------------
 		// CENTERS FRAM
@@ -203,14 +189,15 @@ public class ChessBoard extends JFrame {
 		// STARTS GAME CLASS
 		// -------------------------------------------------------------
 
-		setGame(new Game(getPlayerDatas(), getAllFields(), labelNamePlayer1,
-				labelTimeTillEnd, labelNamePlayer2));
+		game = new Game(playerDatas, fields, givenFigures, labelNamePlayer1,
+				labelTimeTillEnd, labelNamePlayer2, firstBorderLayoutFrame);
 
 		// -------------------------------------------------------------
 		// CASTS CASTLINGCHECK
 		// -------------------------------------------------------------
 
-		setCastlingCheck(new CastlingCheck(getGame()));
+		castlingCheck = new CastlingCheck(game, playerDatas, fields,
+				givenFigures, firstBorderLayoutFrame);
 
 	}
 
@@ -353,14 +340,14 @@ public class ChessBoard extends JFrame {
 		// ADDS NAMES OF THE TWO PLAYERS
 		// -------------------------------------------------------------
 
-		labelNamePlayer1.setText(getPlayerDatas().getNamePlayer1());
+		labelNamePlayer1.setText(playerDatas.getNamePlayer1());
 		labelNamePlayer1.setHorizontalAlignment(SwingConstants.LEFT);
 		secondGridLayoutPanelNorth.add(labelNamePlayer1);
 
 		labelTimeTillEnd.setHorizontalAlignment(SwingConstants.CENTER);
 		secondGridLayoutPanelNorth.add(labelTimeTillEnd);
 
-		labelNamePlayer2.setText(getPlayerDatas().getNamePlayer2());
+		labelNamePlayer2.setText(playerDatas.getNamePlayer2());
 		labelNamePlayer2.setHorizontalAlignment(SwingConstants.RIGHT);
 		secondGridLayoutPanelNorth.add(labelNamePlayer2);
 
@@ -374,19 +361,20 @@ public class ChessBoard extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				int response = JOptionPane.showConfirmDialog(
-						ChessBoard.getMainFrame(),
-						"Do a castling.\n\"YES\" for the left one, \"NO\" for the right one!",
-						"Castling", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+				int response = JOptionPane
+						.showConfirmDialog(
+								firstBorderLayoutFrame,
+								"Do a castling.\n\"YES\" for the left one, \"NO\" for the right one!",
+								"Castling", JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE);
 
 				if (response == JOptionPane.YES_OPTION) {
 
-					getCastlingCheck().leftCastling();
+					castlingCheck.leftCastling();
 
 				} else {
 
-					getCastlingCheck().rightCastling();
+					castlingCheck.rightCastling();
 
 				}
 
@@ -407,7 +395,7 @@ public class ChessBoard extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				int response = JOptionPane.showConfirmDialog(
-						ChessBoard.getMainFrame(), getPlayerDatas().getOnTurn()
+						firstBorderLayoutFrame, playerDatas.getOnTurn()
 								+ " suggests a draw.\nAccept?", "Draw",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -440,8 +428,8 @@ public class ChessBoard extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
-						getPlayerDatas().getOnTurn() + " did surrender!",
+				JOptionPane.showMessageDialog(firstBorderLayoutFrame,
+						playerDatas.getOnTurn() + " did surrender!",
 						"Surrendered", JOptionPane.INFORMATION_MESSAGE);
 
 				firstBorderLayoutFrame.dispatchEvent(new WindowEvent(
@@ -458,17 +446,17 @@ public class ChessBoard extends JFrame {
 	/**
 	 * Creates a new button with MouseListener().
 	 * 
-	 * @param name
+	 * @param givenName
 	 *            Requires the fields name, constructed out of his coordinates
-	 * @param color
+	 * @param givenColor
 	 *            Requires the fields color
 	 * @return Returns a complete JButton with MouseListener()
 	 */
-	private JButton createNewButton(String name, Color color) {
+	private JButton createNewButton(String givenName, Color givenColor) {
 		final JButton button = new JButton();
 		button.setFont(new Font("Serif", Font.BOLD, 30));
-		button.setName(name);
-		button.setBackground(color);
+		button.setName(givenName);
+		button.setBackground(givenColor);
 		button.setFocusPainted(false);
 		button.addMouseListener(new MouseListener() {
 
@@ -516,10 +504,7 @@ public class ChessBoard extends JFrame {
 					// CREATES NEW BORDER
 					// -------------------------------------------------------------
 
-					System.out.println(button.getName());
-
-					game.getPlayerDatas().setFromSelectedJButton(
-							button.getName());
+					playerDatas.setFromSelectedJButton(button.getName());
 
 					game.clearBoard();
 
@@ -539,8 +524,7 @@ public class ChessBoard extends JFrame {
 						// CREATES NEW BORDER
 						// -------------------------------------------------------------
 
-						game.getPlayerDatas().setToSelectedJButton(
-								button.getName());
+						playerDatas.setToSelectedJButton(button.getName());
 
 						game.clearBoard();
 

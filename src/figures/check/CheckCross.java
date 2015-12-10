@@ -21,128 +21,38 @@ public class CheckCross {
 	private int toY;
 	private int maxX;
 	private int maxY;
-	private int turnCounter;
 	private PlayerDatas playerDatas;
 	private Figure[][] figures;
 
 	// -------------------------------------------------------------
-	// PUBLIC SETTERS AND GETTERS
+	// REQUIRED GETTERS AND SETTERS
 	// -------------------------------------------------------------
 
-	public int getCurrentX() {
-
-		return currentX;
-
-	}
-
-	public void setCurrentX(int currentX) {
-
-		this.currentX = currentX;
-
-	}
-
-	public int getCurrentY() {
-
-		return currentY;
-
-	}
-
-	public void setCurrentY(int currentY) {
-
-		this.currentY = currentY;
-
-	}
-
-	public int getToX() {
-
-		return toX;
-
-	}
-
-	public void setToX(int toX) {
-
-		this.toX = toX;
-
-	}
-
-	public int getToY() {
-
-		return toY;
-
-	}
-
-	public void setToY(int toY) {
-
-		this.toY = toY;
-
-	}
-
-	public int getMaxX() {
-
-		return this.maxX;
-
-	}
-
-	public void setMaxX(int maxX) {
-
-		this.maxX = maxX;
-
-	}
-
-	public int getMaxY() {
-
-		return this.maxY;
-
-	}
-
-	public void setMaxY(int maxY) {
-
-		this.maxY = maxY;
-
-	}
-
-	public Figure[][] getAllFigures() {
-
-		return this.figures;
-
-	}
-
-	public void setAllFigures(Figure[][] figures) {
-
-		this.figures = figures;
-
-	}
-
-	public int getTurnCounter() {
-
-		return this.turnCounter;
-
-	}
-
-	public void setTurnCounter(int turnCounter) {
-
-		this.turnCounter = turnCounter;
-
-	}
-
-	public PlayerDatas getPlayerDatas() {
-
-		return this.playerDatas;
-
-	}
-
-	public void setPlayerDatas(PlayerDatas playerDatas) {
-
-		this.playerDatas = playerDatas;
-
-	}
-
+	/**
+	 * Required to get a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @return The Figure at the specified coordinates
+	 */
 	public Figure getFigure(int x, int y) {
 
 		return this.figures[x][y];
 
 	}
 
+	/**
+	 * Required to set a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @param figure
+	 *            The specific Figure
+	 */
 	public void setFigure(int x, int y, Figure figure) {
 
 		this.figures[x][y] = figure;
@@ -152,38 +62,35 @@ public class CheckCross {
 	/**
 	 * Actualizes all variables with current game informations.
 	 * 
-	 * @param currentX
+	 * @param givenCurrentX
 	 *            The current x-coordinate (which the player selected)
-	 * @param currentY
+	 * @param givenCurrentY
 	 *            The current y-coordinate (which the player selected)
-	 * @param toX
+	 * @param givenToX
 	 *            The selected aim x-coordinate
-	 * @param toY
+	 * @param givenToY
 	 *            The selected aim y-coordinate
-	 * @param maxX
+	 * @param givenMaxX
 	 *            The maximal x-coordinates to move
-	 * @param maxY
+	 * @param givenMaxY
 	 *            The maximal y-coordinates to move
-	 * @param turnCounter
-	 *            Number of turns the figure moved
-	 * @param playerDatas
-	 *            Required the PlayerDatas to check color
-	 * @param figures
-	 *            Require actual figures positions
+	 * @param givenPlayerDatas
+	 *            Requires the PlayerDatas to check colors
+	 * @param givenFigures
+	 *            Requires actual figures positions
 	 */
-	public void actualize(int currentX, int currentY, int toX, int toY,
-			int maxX, int maxY, int turnCounter, PlayerDatas playerDatas,
-			Figure[][] figures) {
+	public void actualize(int givenCurrentX, int givenCurrentY, int givenToX,
+			int givenToY, int givenMaxX, int givenMaxY,
+			PlayerDatas givenPlayerDatas, Figure[][] givenFigures) {
 
-		setCurrentX(currentX);
-		setCurrentY(currentY);
-		setToX(toX);
-		setToY(toY);
-		setMaxX(maxX);
-		setMaxY(maxY);
-		setTurnCounter(turnCounter);
-		setPlayerDatas(playerDatas);
-		setAllFigures(figures);
+		currentX = givenCurrentX;
+		currentY = givenCurrentY;
+		toX = givenToX;
+		toY = givenToY;
+		maxX = givenMaxX;
+		maxY = givenMaxY;
+		playerDatas = givenPlayerDatas;
+		figures = givenFigures;
 
 	}
 
@@ -198,10 +105,9 @@ public class CheckCross {
 		// CHECKS COLOR OF THE FIGURE TO MOVE
 		// -------------------------------------------------------------
 
-		if (getPlayerDatas().getOnTurn().equals(
-				getPlayerDatas().getNamePlayer1())) {
+		if (playerDatas.getOnTurn().equals(playerDatas.getNamePlayer1())) {
 
-			if (getFigure(getCurrentX(), getCurrentY()).getColor() != getPlayerDatas()
+			if (getFigure(currentX, currentY).getColor() != playerDatas
 					.getColorPlayerOnTurn()) {
 
 				return false;
@@ -210,7 +116,7 @@ public class CheckCross {
 
 		} else {
 
-			if (getFigure(getCurrentX(), getCurrentY()).getColor() != getPlayerDatas()
+			if (getFigure(currentX, currentY).getColor() != playerDatas
 					.getColorPlayerOnTurn()) {
 
 				return false;
@@ -228,14 +134,14 @@ public class CheckCross {
 
 		boolean checkvalue = false;
 
-		int higherLowerX = getToX() - getCurrentX();
-		int higherLowerY = getToY() - getCurrentY();
+		int higherLowerX = toX - currentX;
+		int higherLowerY = toY - currentY;
 
 		// -------------------------------------------------------------
 		// VALIDATION
 		// -------------------------------------------------------------
 
-		if (getToX() >= 0 && getToX() <= 7 && getToY() >= 0 && getToY() <= 7) {
+		if (toX >= 0 && toX <= 7 && toY >= 0 && toY <= 7) {
 
 			if (higherLowerX != 0 && higherLowerY != 0) {
 
@@ -248,8 +154,8 @@ public class CheckCross {
 
 					if (higherLowerX < 0 && higherLowerY < 0) {
 
-						if (higherLowerX * (-1) > getMaxX()
-								&& higherLowerY * (-1) > getMaxY()) {
+						if (higherLowerX * (-1) > maxX
+								&& higherLowerY * (-1) > maxY) {
 
 							return false;
 
@@ -260,13 +166,12 @@ public class CheckCross {
 
 						while (i >= higherLowerX && j >= higherLowerY) {
 
-							if (getFigure(getCurrentX() + i, getCurrentY() + j) != null) {
+							if (getFigure(currentX + i, currentY + j) != null) {
 
-								if (getCurrentX() + i == getToX()
-										&& getCurrentY() + j == getToY()) {
+								if (currentX + i == toX && currentY + j == toY) {
 
-									if (getFigure(getCurrentX() + i,
-											getCurrentY() + j).getColor() != getPlayerDatas()
+									if (getFigure(currentX + i, currentY + j)
+											.getColor() != playerDatas
 											.getColorPlayerOnTurn()) {
 
 										checkvalue = true;
@@ -281,8 +186,7 @@ public class CheckCross {
 
 							} else {
 
-								if (getCurrentX() + i == getToX()
-										&& getCurrentY() + j == getToY()) {
+								if (currentX + i == toX && currentY + j == toY) {
 
 									checkvalue = true;
 
@@ -301,8 +205,7 @@ public class CheckCross {
 
 					} else if (higherLowerX < 0 && higherLowerY > 0) {
 
-						if (higherLowerX * (-1) > getMaxX()
-								&& higherLowerY > getMaxY()) {
+						if (higherLowerX * (-1) > maxX && higherLowerY > maxY) {
 
 							return false;
 
@@ -313,13 +216,12 @@ public class CheckCross {
 
 						while (i >= higherLowerX && j <= higherLowerY) {
 
-							if (getFigure(getCurrentX() + i, getCurrentY() + j) != null) {
+							if (getFigure(currentX + i, currentY + j) != null) {
 
-								if (getCurrentX() + i == getToX()
-										&& getCurrentY() + j == getToY()) {
+								if (currentX + i == toX && currentY + j == toY) {
 
-									if (getFigure(getCurrentX() + i,
-											getCurrentY() + j).getColor() != getPlayerDatas()
+									if (getFigure(currentX + i, currentY + j)
+											.getColor() != playerDatas
 											.getColorPlayerOnTurn()) {
 
 										checkvalue = true;
@@ -334,8 +236,7 @@ public class CheckCross {
 
 							} else {
 
-								if (getCurrentX() + i == getToX()
-										&& getCurrentY() + j == getToY()) {
+								if (currentX + i == toX && currentY + j == toY) {
 
 									checkvalue = true;
 
@@ -354,8 +255,7 @@ public class CheckCross {
 
 					} else if (higherLowerX > 0 && higherLowerY < 0) {
 
-						if (higherLowerX > getMaxX()
-								&& higherLowerY * (-1) > getMaxY()) {
+						if (higherLowerX > maxX && higherLowerY * (-1) > maxY) {
 
 							return false;
 
@@ -366,13 +266,12 @@ public class CheckCross {
 
 						while (i <= higherLowerX && j >= higherLowerY) {
 
-							if (getFigure(getCurrentX() + i, getCurrentY() + j) != null) {
+							if (getFigure(currentX + i, currentY + j) != null) {
 
-								if (getCurrentX() + i == getToX()
-										&& getCurrentY() + j == getToY()) {
+								if (currentX + i == toX && currentY + j == toY) {
 
-									if (getFigure(getCurrentX() + i,
-											getCurrentY() + j).getColor() != getPlayerDatas()
+									if (getFigure(currentX + i, currentY + j)
+											.getColor() != playerDatas
 											.getColorPlayerOnTurn()) {
 
 										checkvalue = true;
@@ -387,8 +286,7 @@ public class CheckCross {
 
 							} else {
 
-								if (getCurrentX() + i == getToX()
-										&& getCurrentY() + j == getToY()) {
+								if (currentX + i == toX && currentY + j == toY) {
 
 									checkvalue = true;
 
@@ -407,8 +305,7 @@ public class CheckCross {
 
 					} else if (higherLowerX > 0 && higherLowerY > 0) {
 
-						if (higherLowerX > getMaxX()
-								&& higherLowerY > getMaxY()) {
+						if (higherLowerX > maxX && higherLowerY > maxY) {
 
 							return false;
 
@@ -419,13 +316,12 @@ public class CheckCross {
 
 						while (i <= higherLowerX && j <= higherLowerY) {
 
-							if (getFigure(getCurrentX() + i, getCurrentY() + j) != null) {
+							if (getFigure(currentX + i, currentY + j) != null) {
 
-								if (getCurrentX() + i == getToX()
-										&& getCurrentY() + j == getToY()) {
+								if (currentX + i == toX && currentY + j == toY) {
 
-									if (getFigure(getCurrentX() + i,
-											getCurrentY() + j).getColor() != getPlayerDatas()
+									if (getFigure(currentX + i, currentY + j)
+											.getColor() != playerDatas
 											.getColorPlayerOnTurn()) {
 
 										checkvalue = true;
@@ -440,8 +336,7 @@ public class CheckCross {
 
 							} else {
 
-								if (getCurrentX() + i == getToX()
-										&& getCurrentY() + j == getToY()) {
+								if (currentX + i == toX && currentY + j == toY) {
 
 									checkvalue = true;
 

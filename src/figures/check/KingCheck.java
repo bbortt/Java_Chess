@@ -25,60 +25,31 @@ public class KingCheck {
 	// PUBLIC GETTERS AND SETTERS
 	// -------------------------------------------------------------
 
-	public int getxCoordinate() {
-
-		return xCoordinate;
-
-	}
-
-	public void setxCoordinate(int xCoordinate) {
-
-		this.xCoordinate = xCoordinate;
-
-	}
-
-	public int getyCoordinate() {
-
-		return yCoordinate;
-
-	}
-
-	public void setyCoordinate(int yCoordinate) {
-
-		this.yCoordinate = yCoordinate;
-
-	}
-
-	public Color getColorToCheck() {
-
-		return colorToCheck;
-
-	}
-
-	public void setColorToCheck(Color colorToCheck) {
-
-		this.colorToCheck = colorToCheck;
-
-	}
-
-	public Figure[][] getAllFigures() {
-
-		return figures;
-
-	}
-
-	public void setAllFigures(Figure[][] figures) {
-
-		this.figures = figures;
-
-	}
-
+	/**
+	 * Required to get a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @return The Figure at the specified coordinates
+	 */
 	public Figure getFigure(int x, int y) {
 
 		return this.figures[x][y];
 
 	}
 
+	/**
+	 * Required to set a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @param figure
+	 *            The specific Figure
+	 */
 	public void setFigure(int x, int y, Figure figure) {
 
 		this.figures[x][y] = figure;
@@ -88,20 +59,20 @@ public class KingCheck {
 	/**
 	 * Checks if someone's king is checked.
 	 * 
-	 * @param colorToCheck
+	 * @param givenColorToCheck
 	 *            The color of the player to check
-	 * @param figures
+	 * @param givenFigures
 	 *            Requires every figures position
 	 * @return Returns true if the king is not checked
-	 * */
-	public boolean check(Color colorToCheck, Figure[][] figures) {
+	 */
+	public boolean check(Color givenColorToCheck, Figure[][] givenFigures) {
 
 		// -------------------------------------------------------------
 		// UPDATE THE PRIVATE VARIABLES
 		// -------------------------------------------------------------
 
-		setColorToCheck(colorToCheck);
-		setAllFigures(figures);
+		colorToCheck = givenColorToCheck;
+		figures = givenFigures;
 
 		// -------------------------------------------------------------
 		// DETECTS THE KING
@@ -112,11 +83,15 @@ public class KingCheck {
 			for (int x = 0; x < 8; x = x + 1) {
 
 				if (String.valueOf(getFigure(x, y)).contains(
-						"Figures.Figures.King")
-						&& getFigure(x, y).getColor() == getColorToCheck()) {
+						"figures.figures.King")
+						&& getFigure(x, y).getColor() == colorToCheck) {
 
-					setxCoordinate(x);
-					setyCoordinate(y);
+					xCoordinate = x;
+					yCoordinate = y;
+
+					// -------------------------------------------------------------
+					// BREAKS THE LOOP
+					// -------------------------------------------------------------
 
 					x = 8;
 					y = 8;
@@ -135,38 +110,31 @@ public class KingCheck {
 
 		int iterator = 1;
 
-		while (getyCoordinate() - iterator >= 0) {
+		while (yCoordinate - iterator >= 0) {
 
-			if (getFigure(getxCoordinate(), getyCoordinate() - iterator) != null) {
+			if (getFigure(xCoordinate, yCoordinate - iterator) != null) {
 
-				if (String
-						.valueOf(
-								getFigure(getxCoordinate(), getyCoordinate()
-										- iterator)).contains(
-								"Figures.Figures.Rook")
-						&& getFigure(getxCoordinate(),
-								getyCoordinate() - iterator).getColor() != getColorToCheck()) {
+				if (String.valueOf(
+						getFigure(xCoordinate, yCoordinate - iterator))
+						.contains("figures.figures.Rook")
+						&& getFigure(xCoordinate, yCoordinate - iterator)
+								.getColor() != colorToCheck) {
 
 					checkValue = true;
 
-				} else if (String
-						.valueOf(
-								getFigure(getxCoordinate(), getyCoordinate()
-										- iterator)).contains(
-								"Figures.Figures.Queen")
-						&& getFigure(getxCoordinate(),
-								getyCoordinate() - iterator).getColor() != getColorToCheck()) {
+				} else if (String.valueOf(
+						getFigure(xCoordinate, yCoordinate - iterator))
+						.contains("figures.figures.Queen")
+						&& getFigure(xCoordinate, yCoordinate - iterator)
+								.getColor() != colorToCheck) {
 
 					checkValue = true;
 
-				} else if (String
-						.valueOf(
-								getFigure(getxCoordinate(), getyCoordinate()
-										- iterator)).contains(
-								"Figures.Figures.King")
-						&& getFigure(getxCoordinate(),
-								getyCoordinate() - iterator).getColor() != getColorToCheck()
-						&& iterator == 1) {
+				} else if (String.valueOf(
+						getFigure(xCoordinate, yCoordinate - iterator))
+						.contains("figures.figures.King")
+						&& getFigure(xCoordinate, yCoordinate - iterator)
+								.getColor() != colorToCheck && iterator == 1) {
 
 					checkValue = true;
 
@@ -192,38 +160,31 @@ public class KingCheck {
 
 		iterator = 1;
 
-		while (getxCoordinate() + iterator <= 7) {
+		while (xCoordinate + iterator <= 7) {
 
-			if (getFigure(getxCoordinate() + iterator, getyCoordinate()) != null) {
+			if (getFigure(xCoordinate + iterator, yCoordinate) != null) {
 
-				if (String
-						.valueOf(
-								getFigure(getxCoordinate() + iterator,
-										getyCoordinate())).contains(
-								"Figures.Figures.Rook")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate()).getColor() != getColorToCheck()) {
+				if (String.valueOf(
+						getFigure(xCoordinate + iterator, yCoordinate))
+						.contains("figures.figures.Rook")
+						&& getFigure(xCoordinate + iterator, yCoordinate)
+								.getColor() != colorToCheck) {
 
 					checkValue = true;
 
-				} else if (String
-						.valueOf(
-								getFigure(getxCoordinate() + iterator,
-										getyCoordinate())).contains(
-								"Figures.Figures.Queen")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate()).getColor() != getColorToCheck()) {
+				} else if (String.valueOf(
+						getFigure(xCoordinate + iterator, yCoordinate))
+						.contains("figures.figures.Queen")
+						&& getFigure(xCoordinate + iterator, yCoordinate)
+								.getColor() != colorToCheck) {
 
 					checkValue = true;
 
-				} else if (String
-						.valueOf(
-								getFigure(getxCoordinate() + iterator,
-										getyCoordinate())).contains(
-								"Figures.Figures.King")
-						&& getFigure(getxCoordinate(),
-								getyCoordinate() + iterator).getColor() != getColorToCheck()
-						&& iterator == 1) {
+				} else if (String.valueOf(
+						getFigure(xCoordinate + iterator, yCoordinate))
+						.contains("figures.figures.King")
+						&& getFigure(xCoordinate, yCoordinate + iterator)
+								.getColor() != colorToCheck && iterator == 1) {
 
 					checkValue = true;
 
@@ -249,38 +210,31 @@ public class KingCheck {
 
 		iterator = 1;
 
-		while (getyCoordinate() + iterator <= 7) {
+		while (yCoordinate + iterator <= 7) {
 
-			if (getFigure(getxCoordinate(), getyCoordinate() + iterator) != null) {
+			if (getFigure(xCoordinate, yCoordinate + iterator) != null) {
 
-				if (String
-						.valueOf(
-								getFigure(getxCoordinate(), getyCoordinate()
-										+ iterator)).contains(
-								"Figures.Figures.Rook")
-						&& getFigure(getxCoordinate(),
-								getyCoordinate() + iterator).getColor() != getColorToCheck()) {
+				if (String.valueOf(
+						getFigure(xCoordinate, yCoordinate + iterator))
+						.contains("figures.figures.Rook")
+						&& getFigure(xCoordinate, yCoordinate + iterator)
+								.getColor() != colorToCheck) {
 
 					checkValue = true;
 
-				} else if (String
-						.valueOf(
-								getFigure(getxCoordinate(), getyCoordinate()
-										+ iterator)).contains(
-								"Figures.Figures.Queen")
-						&& getFigure(getxCoordinate(),
-								getyCoordinate() + iterator).getColor() != getColorToCheck()) {
+				} else if (String.valueOf(
+						getFigure(xCoordinate, yCoordinate + iterator))
+						.contains("figures.figures.Queen")
+						&& getFigure(xCoordinate, yCoordinate + iterator)
+								.getColor() != colorToCheck) {
 
 					checkValue = true;
 
-				} else if (String
-						.valueOf(
-								getFigure(getxCoordinate(), getyCoordinate()
-										+ iterator)).contains(
-								"Figures.Figures.King")
-						&& getFigure(getxCoordinate(),
-								getyCoordinate() + iterator).getColor() != getColorToCheck()
-						&& iterator == 1) {
+				} else if (String.valueOf(
+						getFigure(xCoordinate, yCoordinate + iterator))
+						.contains("figures.figures.King")
+						&& getFigure(xCoordinate, yCoordinate + iterator)
+								.getColor() != colorToCheck && iterator == 1) {
 
 					checkValue = true;
 
@@ -306,38 +260,31 @@ public class KingCheck {
 
 		iterator = 1;
 
-		while (getxCoordinate() - iterator >= 0) {
+		while (xCoordinate - iterator >= 0) {
 
-			if (getFigure(getxCoordinate() - iterator, getyCoordinate()) != null) {
+			if (getFigure(xCoordinate - iterator, yCoordinate) != null) {
 
-				if (String
-						.valueOf(
-								getFigure(getxCoordinate() - iterator,
-										getyCoordinate())).contains(
-								"Figures.Figures.Rook")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate()).getColor() != getColorToCheck()) {
+				if (String.valueOf(
+						getFigure(xCoordinate - iterator, yCoordinate))
+						.contains("figures.figures.Rook")
+						&& getFigure(xCoordinate - iterator, yCoordinate)
+								.getColor() != colorToCheck) {
 
 					checkValue = true;
 
-				} else if (String
-						.valueOf(
-								getFigure(getxCoordinate() - iterator,
-										getyCoordinate())).contains(
-								"Figures.Figures.Queen")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate()).getColor() != getColorToCheck()) {
+				} else if (String.valueOf(
+						getFigure(xCoordinate - iterator, yCoordinate))
+						.contains("figures.figures.Queen")
+						&& getFigure(xCoordinate - iterator, yCoordinate)
+								.getColor() != colorToCheck) {
 
 					checkValue = true;
 
-				} else if (String
-						.valueOf(
-								getFigure(getxCoordinate() - iterator,
-										getyCoordinate())).contains(
-								"Figures.Figures.King")
-						&& getFigure(getxCoordinate(),
-								getyCoordinate() - iterator).getColor() != getColorToCheck()
-						&& iterator == 1) {
+				} else if (String.valueOf(
+						getFigure(xCoordinate - iterator, yCoordinate))
+						.contains("figures.figures.King")
+						&& getFigure(xCoordinate, yCoordinate - iterator)
+								.getColor() != colorToCheck && iterator == 1) {
 
 					checkValue = true;
 
@@ -364,44 +311,42 @@ public class KingCheck {
 
 		iterator = 1;
 
-		while (getxCoordinate() + iterator <= 7
-				&& getyCoordinate() + iterator <= 7) {
+		while (xCoordinate + iterator <= 7 && yCoordinate + iterator <= 7) {
 
-			if (getFigure(getxCoordinate() + iterator, getyCoordinate()
-					+ iterator) != null) {
+			if (getFigure(xCoordinate + iterator, yCoordinate + iterator) != null) {
 
 				if (String.valueOf(
-						getFigure(getxCoordinate() + iterator, getyCoordinate()
-								+ iterator)).contains("Figures.Figures.Bishop")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() + iterator).getColor() != getColorToCheck()) {
+						getFigure(xCoordinate + iterator, yCoordinate
+								+ iterator)).contains("figures.figures.Bishop")
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate + iterator).getColor() != colorToCheck) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() + iterator, getyCoordinate()
-								+ iterator)).contains("Figures.Figures.Queen")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() + iterator).getColor() != getColorToCheck()) {
+						getFigure(xCoordinate + iterator, yCoordinate
+								+ iterator)).contains("figures.figures.Queen")
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate + iterator).getColor() != colorToCheck) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() + iterator, getyCoordinate()
-								+ iterator)).contains("Figures.Figures.Pawn")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() + iterator).getColor() == Color.WHITE
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() + iterator).getColor() != getColorToCheck()
+						getFigure(xCoordinate + iterator, yCoordinate
+								+ iterator)).contains("figures.figures.Pawn")
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate + iterator).getColor() == Color.WHITE
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate + iterator).getColor() != colorToCheck
 						&& iterator == 1) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() + iterator, getyCoordinate()
-								+ iterator)).contains("Figures.Figures.King")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() + iterator).getColor() != getColorToCheck()
+						getFigure(xCoordinate + iterator, yCoordinate
+								+ iterator)).contains("figures.figures.King")
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate + iterator).getColor() != colorToCheck
 						&& iterator == 1) {
 
 					checkValue = true;
@@ -429,44 +374,42 @@ public class KingCheck {
 
 		iterator = 1;
 
-		while (getxCoordinate() + iterator <= 7
-				&& getyCoordinate() - iterator >= 0) {
+		while (xCoordinate + iterator <= 7 && yCoordinate - iterator >= 0) {
 
-			if (getFigure(getxCoordinate() + iterator, getyCoordinate()
-					- iterator) != null) {
+			if (getFigure(xCoordinate + iterator, yCoordinate - iterator) != null) {
 
 				if (String.valueOf(
-						getFigure(getxCoordinate() + iterator, getyCoordinate()
-								- iterator)).contains("Figures.Figures.Bishop")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() - iterator).getColor() != getColorToCheck()) {
+						getFigure(xCoordinate + iterator, yCoordinate
+								- iterator)).contains("figures.figures.Bishop")
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate - iterator).getColor() != colorToCheck) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() + iterator, getyCoordinate()
-								- iterator)).contains("Figures.Figures.Queen")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() - iterator).getColor() != getColorToCheck()) {
+						getFigure(xCoordinate + iterator, yCoordinate
+								- iterator)).contains("figures.figures.Queen")
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate - iterator).getColor() != colorToCheck) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() + iterator, getyCoordinate()
-								- iterator)).contains("Figures.Figures.Pawn")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() - iterator).getColor() == Color.BLACK
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() - iterator).getColor() != getColorToCheck()
+						getFigure(xCoordinate + iterator, yCoordinate
+								- iterator)).contains("figures.figures.Pawn")
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate - iterator).getColor() == Color.BLACK
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate - iterator).getColor() != colorToCheck
 						&& iterator == 1) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() + iterator, getyCoordinate()
-								- iterator)).contains("Figures.Figures.King")
-						&& getFigure(getxCoordinate() + iterator,
-								getyCoordinate() - iterator).getColor() != getColorToCheck()
+						getFigure(xCoordinate + iterator, yCoordinate
+								- iterator)).contains("figures.figures.King")
+						&& getFigure(xCoordinate + iterator,
+								yCoordinate - iterator).getColor() != colorToCheck
 						&& iterator == 1) {
 
 					checkValue = true;
@@ -494,44 +437,42 @@ public class KingCheck {
 
 		iterator = 1;
 
-		while (getxCoordinate() - iterator >= 0
-				&& getyCoordinate() + iterator <= 7) {
+		while (xCoordinate - iterator >= 0 && yCoordinate + iterator <= 7) {
 
-			if (getFigure(getxCoordinate() - iterator, getyCoordinate()
-					+ iterator) != null) {
+			if (getFigure(xCoordinate - iterator, yCoordinate + iterator) != null) {
 
 				if (String.valueOf(
-						getFigure(getxCoordinate() - iterator, getyCoordinate()
-								+ iterator)).contains("Figures.Figures.Bishop")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() + iterator).getColor() != getColorToCheck()) {
+						getFigure(xCoordinate - iterator, yCoordinate
+								+ iterator)).contains("figures.figures.Bishop")
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate + iterator).getColor() != colorToCheck) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() - iterator, getyCoordinate()
-								+ iterator)).contains("Figures.Figures.Queen")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() + iterator).getColor() != getColorToCheck()) {
+						getFigure(xCoordinate - iterator, yCoordinate
+								+ iterator)).contains("figures.figures.Queen")
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate + iterator).getColor() != colorToCheck) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() - iterator, getyCoordinate()
-								+ iterator)).contains("Figures.Figures.Pawn")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() + iterator).getColor() == Color.WHITE
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() + iterator).getColor() != getColorToCheck()
+						getFigure(xCoordinate - iterator, yCoordinate
+								+ iterator)).contains("figures.figures.Pawn")
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate + iterator).getColor() == Color.WHITE
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate + iterator).getColor() != colorToCheck
 						&& iterator == 1) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() - iterator, getyCoordinate()
-								+ iterator)).contains("Figures.Figures.King")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() + iterator).getColor() != getColorToCheck()
+						getFigure(xCoordinate - iterator, yCoordinate
+								+ iterator)).contains("figures.figures.King")
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate + iterator).getColor() != colorToCheck
 						&& iterator == 1) {
 
 					checkValue = true;
@@ -559,44 +500,42 @@ public class KingCheck {
 
 		iterator = 1;
 
-		while (getxCoordinate() - iterator >= 0
-				&& getyCoordinate() - iterator >= 0) {
+		while (xCoordinate - iterator >= 0 && yCoordinate - iterator >= 0) {
 
-			if (getFigure(getxCoordinate() - iterator, getyCoordinate()
-					- iterator) != null) {
+			if (getFigure(xCoordinate - iterator, yCoordinate - iterator) != null) {
 
 				if (String.valueOf(
-						getFigure(getxCoordinate() - iterator, getyCoordinate()
-								- iterator)).contains("Figures.Figures.Bishop")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() - iterator).getColor() != getColorToCheck()) {
+						getFigure(xCoordinate - iterator, yCoordinate
+								- iterator)).contains("figures.figures.Bishop")
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate - iterator).getColor() != colorToCheck) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() - iterator, getyCoordinate()
-								- iterator)).contains("Figures.Figures.Queen")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() - iterator).getColor() != getColorToCheck()) {
+						getFigure(xCoordinate - iterator, yCoordinate
+								- iterator)).contains("figures.figures.Queen")
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate - iterator).getColor() != colorToCheck) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() - iterator, getyCoordinate()
-								- iterator)).contains("Figures.Figures.Pawn")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() - iterator).getColor() == Color.BLACK
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() - iterator).getColor() != getColorToCheck()
+						getFigure(xCoordinate - iterator, yCoordinate
+								- iterator)).contains("figures.figures.Pawn")
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate - iterator).getColor() == Color.BLACK
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate - iterator).getColor() != colorToCheck
 						&& iterator == 1) {
 
 					checkValue = true;
 
 				} else if (String.valueOf(
-						getFigure(getxCoordinate() - iterator, getyCoordinate()
-								- iterator)).contains("Figures.Figures.King")
-						&& getFigure(getxCoordinate() - iterator,
-								getyCoordinate() - iterator).getColor() != getColorToCheck()
+						getFigure(xCoordinate - iterator, yCoordinate
+								- iterator)).contains("figures.figures.King")
+						&& getFigure(xCoordinate - iterator,
+								yCoordinate - iterator).getColor() != colorToCheck
 						&& iterator == 1) {
 
 					checkValue = true;
@@ -621,15 +560,13 @@ public class KingCheck {
 		// CHECKS FOR KNIGHTS
 		// -------------------------------------------------------------
 
-		if (getxCoordinate() + 2 <= 7 && getyCoordinate() + 1 <= 7) {
+		if (xCoordinate + 2 <= 7 && yCoordinate + 1 <= 7) {
 
-			if (getFigure(getxCoordinate() + 2, getyCoordinate() + 1) != null
+			if (getFigure(xCoordinate + 2, yCoordinate + 1) != null
 					&& String.valueOf(
-							getFigure(getxCoordinate() + 2,
-									getyCoordinate() + 1)).contains(
-							"Figures.Figures.Knight")
-					&& getFigure(getxCoordinate() + 2, getyCoordinate() + 1)
-							.getColor() != getColorToCheck()) {
+							getFigure(xCoordinate + 2, yCoordinate + 1))
+							.contains("figures.figures.Knight")
+					&& getFigure(xCoordinate + 2, yCoordinate + 1).getColor() != colorToCheck) {
 
 				checkValue = true;
 
@@ -637,15 +574,13 @@ public class KingCheck {
 
 		}
 
-		if (getxCoordinate() + 2 <= 7 && getyCoordinate() - 1 >= 0) {
+		if (xCoordinate + 2 <= 7 && yCoordinate - 1 >= 0) {
 
-			if (getFigure(getxCoordinate() + 2, getyCoordinate() - 1) != null
+			if (getFigure(xCoordinate + 2, yCoordinate - 1) != null
 					&& String.valueOf(
-							getFigure(getxCoordinate() + 2,
-									getyCoordinate() - 1)).contains(
-							"Figures.Figures.Knight")
-					&& getFigure(getxCoordinate() + 2, getyCoordinate() - 1)
-							.getColor() != getColorToCheck()) {
+							getFigure(xCoordinate + 2, yCoordinate - 1))
+							.contains("figures.figures.Knight")
+					&& getFigure(xCoordinate + 2, yCoordinate - 1).getColor() != colorToCheck) {
 
 				checkValue = true;
 
@@ -653,15 +588,13 @@ public class KingCheck {
 
 		}
 
-		if (getxCoordinate() - 2 >= 0 && getyCoordinate() + 1 <= 7) {
+		if (xCoordinate - 2 >= 0 && yCoordinate + 1 <= 7) {
 
-			if (getFigure(getxCoordinate() - 2, getyCoordinate() + 1) != null
+			if (getFigure(xCoordinate - 2, yCoordinate + 1) != null
 					&& String.valueOf(
-							getFigure(getxCoordinate() - 2,
-									getyCoordinate() + 1)).contains(
-							"Figures.Figures.Knight")
-					&& getFigure(getxCoordinate() - 2, getyCoordinate() + 1)
-							.getColor() != getColorToCheck()) {
+							getFigure(xCoordinate - 2, yCoordinate + 1))
+							.contains("figures.figures.Knight")
+					&& getFigure(xCoordinate - 2, yCoordinate + 1).getColor() != colorToCheck) {
 
 				checkValue = true;
 
@@ -669,15 +602,13 @@ public class KingCheck {
 
 		}
 
-		if (getxCoordinate() - 2 >= 0 && getyCoordinate() - 1 >= 0) {
+		if (xCoordinate - 2 >= 0 && yCoordinate - 1 >= 0) {
 
-			if (getFigure(getxCoordinate() - 2, getyCoordinate() - 1) != null
+			if (getFigure(xCoordinate - 2, yCoordinate - 1) != null
 					&& String.valueOf(
-							getFigure(getxCoordinate() - 2,
-									getyCoordinate() - 1)).contains(
-							"Figures.Figures.Knight")
-					&& getFigure(getxCoordinate() - 2, getyCoordinate() - 1)
-							.getColor() != getColorToCheck()) {
+							getFigure(xCoordinate - 2, yCoordinate - 1))
+							.contains("figures.figures.Knight")
+					&& getFigure(xCoordinate - 2, yCoordinate - 1).getColor() != colorToCheck) {
 
 				checkValue = true;
 
@@ -685,15 +616,13 @@ public class KingCheck {
 
 		}
 
-		if (getxCoordinate() + 1 <= 7 && getyCoordinate() + 2 <= 7) {
+		if (xCoordinate + 1 <= 7 && yCoordinate + 2 <= 7) {
 
-			if (getFigure(getxCoordinate() + 1, getyCoordinate() + 2) != null
+			if (getFigure(xCoordinate + 1, yCoordinate + 2) != null
 					&& String.valueOf(
-							getFigure(getxCoordinate() + 1,
-									getyCoordinate() + 2)).contains(
-							"Figures.Figures.Knight")
-					&& getFigure(getxCoordinate() + 1, getyCoordinate() + 2)
-							.getColor() != getColorToCheck()) {
+							getFigure(xCoordinate + 1, yCoordinate + 2))
+							.contains("figures.figures.Knight")
+					&& getFigure(xCoordinate + 1, yCoordinate + 2).getColor() != colorToCheck) {
 
 				checkValue = true;
 
@@ -701,15 +630,13 @@ public class KingCheck {
 
 		}
 
-		if (getxCoordinate() + 1 <= 7 && getyCoordinate() - 2 >= 0) {
+		if (xCoordinate + 1 <= 7 && yCoordinate - 2 >= 0) {
 
-			if (getFigure(getxCoordinate() + 1, getyCoordinate() - 2) != null
+			if (getFigure(xCoordinate + 1, yCoordinate - 2) != null
 					&& String.valueOf(
-							getFigure(getxCoordinate() + 1,
-									getyCoordinate() - 2)).contains(
-							"Figures.Figures.Knight")
-					&& getFigure(getxCoordinate() + 1, getyCoordinate() - 2)
-							.getColor() != getColorToCheck()) {
+							getFigure(xCoordinate + 1, yCoordinate - 2))
+							.contains("figures.figures.Knight")
+					&& getFigure(xCoordinate + 1, yCoordinate - 2).getColor() != colorToCheck) {
 
 				checkValue = true;
 
@@ -717,15 +644,13 @@ public class KingCheck {
 
 		}
 
-		if (getxCoordinate() - 1 >= 0 && getyCoordinate() + 2 <= 7) {
+		if (xCoordinate - 1 >= 0 && yCoordinate + 2 <= 7) {
 
-			if (getFigure(getxCoordinate() - 1, getyCoordinate() + 2) != null
+			if (getFigure(xCoordinate - 1, yCoordinate + 2) != null
 					&& String.valueOf(
-							getFigure(getxCoordinate() - 1,
-									getyCoordinate() + 2)).contains(
-							"Figures.Figures.Knight")
-					&& getFigure(getxCoordinate() - 1, getyCoordinate() + 2)
-							.getColor() != getColorToCheck()) {
+							getFigure(xCoordinate - 1, yCoordinate + 2))
+							.contains("figures.figures.Knight")
+					&& getFigure(xCoordinate - 1, yCoordinate + 2).getColor() != colorToCheck) {
 
 				checkValue = true;
 
@@ -733,15 +658,13 @@ public class KingCheck {
 
 		}
 
-		if (getxCoordinate() - 1 >= 0 && getyCoordinate() - 2 >= 0) {
+		if (xCoordinate - 1 >= 0 && yCoordinate - 2 >= 0) {
 
-			if (getFigure(getxCoordinate() - 1, getyCoordinate() - 2) != null
+			if (getFigure(xCoordinate - 1, yCoordinate - 2) != null
 					&& String.valueOf(
-							getFigure(getxCoordinate() - 1,
-									getyCoordinate() - 2)).contains(
-							"Figures.Figures.Knight")
-					&& getFigure(getxCoordinate() - 1, getyCoordinate() - 2)
-							.getColor() != getColorToCheck()) {
+							getFigure(xCoordinate - 1, yCoordinate - 2))
+							.contains("figures.figures.Knight")
+					&& getFigure(xCoordinate - 1, yCoordinate - 2).getColor() != colorToCheck) {
 
 				checkValue = true;
 

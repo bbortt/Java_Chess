@@ -5,13 +5,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 
-import main.Game;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import dataBase.PlayerDatas;
+import figures.Figure;
+import figures.figures.Bishop;
+import figures.figures.King;
+import figures.figures.Knight;
+import figures.figures.Pawn;
+import figures.figures.Queen;
+import figures.figures.Rook;
 
 /**
  * 
@@ -20,30 +25,26 @@ import dataBase.PlayerDatas;
  */
 public class Figure_Move {
 
+	// -------------------------------------------------------------
+	// VARIABLES
+	// -------------------------------------------------------------
+
 	private PlayerDatas playerDatas;
-	private Game game;
+	private Figure[][] figures;
 
-	private PlayerDatas getPlayerDatas() {
+	// -------------------------------------------------------------
+	// PUBLIC GETTERS AND SETTERS
+	// -------------------------------------------------------------
 
-		return this.playerDatas;
+	public Figure getFigure(int x, int y) {
 
-	}
-
-	private void setPlayerDatas(PlayerDatas playerDatas) {
-
-		this.playerDatas = playerDatas;
+		return this.figures[x][y];
 
 	}
 
-	private Game getGame() {
+	public void setFigure(int x, int y, Figure figure) {
 
-		return this.game;
-
-	}
-
-	private void setGame(Game game) {
-
-		this.game = game;
+		this.figures[x][y] = figure;
 
 	}
 
@@ -52,17 +53,17 @@ public class Figure_Move {
 	// -------------------------------------------------------------
 
 	/**
-	 * setUp() - Sets up the required datas
+	 * Sets up the required data
 	 */
 	@Before
 	public void setUp() {
 
-		setPlayerDatas(new PlayerDatas());
+		playerDatas = new PlayerDatas();
+		figures = new Figure[8][8];
 
 		// SETS UP DATAS
 		preparePlayerDatas();
-		setGame(new Game(getPlayerDatas(), null, null, null, null));
-		getGame().defaultSetUp();
+		defaultSetUp();
 
 	}
 
@@ -71,7 +72,7 @@ public class Figure_Move {
 	// -------------------------------------------------------------
 
 	/**
-	 * testValidMove() - Tests a valid move
+	 * Tests a valid move
 	 * 
 	 * @throws Exception
 	 *             Throws null pointer exception for DataBas | Figure[][] ==
@@ -85,27 +86,26 @@ public class Figure_Move {
 		for (int x = 0; x < 8; x = x + 1) {
 
 			// UPDATES PLAYERDATAS
-			getPlayerDatas().setFromSelectedJButton(x + "." + y);
-			getPlayerDatas().setToSelectedJButton(x + "." + (y - 2));
+			playerDatas.setFromSelectedJButton(x + "." + y);
+			playerDatas.setToSelectedJButton(x + "." + (y - 2));
 
 			// EXECUTES THE MOVE --> RETURN VALUE HAS TO BE TRUE
-			assertTrue(
-					"Own pawn can move 2 forward in his first turn.",
-					getGame().getFigure(x, y).move(x, y, x, (y - 2),
-							getPlayerDatas(), getGame().getAllFigures()));
+			assertTrue("Own pawn can move 2 forward in his first turn.",
+					getFigure(x, y)
+							.move(x, y, x, (y - 2), playerDatas, figures));
 
 			// UPDATES THE FIGURES, AMOUNTS THE TURN COUNTER
-			getGame().setFigure(x, (y - 2), getGame().getFigure(x, y));
-			getGame().setFigure(x, y, null);
-			getGame().getFigure(x, (y - 2)).setTurnCounter(
-					getGame().getFigure(x, (y - 2)).getTurnCounter() + 1);
+			setFigure(x, (y - 2), getFigure(x, y));
+			setFigure(x, y, null);
+			getFigure(x, (y - 2)).setTurnCounter(
+					getFigure(x, (y - 2)).getTurnCounter() + 1);
 
 		}
 
 	}
 
 	/**
-	 * testColorChecking() - Tests if the color is checked
+	 * Tests if the color is checked
 	 * 
 	 * @throws Exception
 	 *             Throws null pointer exception for DataBase | Figure[][] ==
@@ -120,14 +120,12 @@ public class Figure_Move {
 			for (int x = 0; x < 8; x = x + 1) {
 
 				// UPDATES PLAYERDATAS (NOTE: ONLY THE FROM DOES MATTER)
-				getPlayerDatas().setFromSelectedJButton(x + "." + y);
-				getPlayerDatas().setToSelectedJButton(x + "." + y);
+				playerDatas.setFromSelectedJButton(x + "." + y);
+				playerDatas.setToSelectedJButton(x + "." + y);
 
 				// EXECUTES THE MOVE --> RETURN VALUE HAS TO BE FALSE
-				assertFalse(
-						"Enemies pawn could not be moved.",
-						getGame().getFigure(x, y).move(x, y, x, y,
-								getPlayerDatas(), getGame().getAllFigures()));
+				assertFalse("Enemies pawn could not be moved.", getFigure(x, y)
+						.move(x, y, x, y, playerDatas, figures));
 
 			}
 
@@ -136,7 +134,7 @@ public class Figure_Move {
 	}
 
 	/**
-	 * testRangeChecking() - Tests if the range is checked
+	 * Tests if the range is checked
 	 * 
 	 * @throws Exception
 	 *             Throws null pointer exception for DataBase | Figure[][] ==
@@ -151,21 +149,20 @@ public class Figure_Move {
 		for (int x = 0; x < 8; x = x + 1) {
 
 			// UPDATES PLAYERDATAS
-			getPlayerDatas().setFromSelectedJButton(x + "." + y);
-			getPlayerDatas().setToSelectedJButton(x + "." + (y - 3));
+			playerDatas.setFromSelectedJButton(x + "." + y);
+			playerDatas.setToSelectedJButton(x + "." + (y - 3));
 
 			// EXECUTES THE MOVE --> RETURN VALUE HAS TO BE FALSE
-			assertFalse(
-					"Own pawn could not be moved.",
-					getGame().getFigure(x, y).move(x, y, x, (y - 3),
-							getPlayerDatas(), getGame().getAllFigures()));
+			assertFalse("Own pawn could not be moved.",
+					getFigure(x, y)
+							.move(x, y, x, (y - 3), playerDatas, figures));
 
 		}
 
 	}
 
 	/**
-	 * testTurnCounter() - Tests if the turn counter is checked
+	 * Tests if the turn counter is checked
 	 * 
 	 * @throws Exception
 	 *             Throws null pointer exception for DataBase | Figure[][] ==
@@ -180,20 +177,19 @@ public class Figure_Move {
 		for (int x = 0; x < 8; x = x + 1) {
 
 			// UPDATES PLAYERDATAS
-			getPlayerDatas().setFromSelectedJButton(x + "." + y);
-			getPlayerDatas().setToSelectedJButton(x + "." + (y - 2));
+			playerDatas.setFromSelectedJButton(x + "." + y);
+			playerDatas.setToSelectedJButton(x + "." + (y - 2));
 
 			// EXECUTES THE MOVE --> RETURN VALUE HAS TO BE TRUE
-			assertTrue(
-					"Own pawn can move 2 forward in his first turn.",
-					getGame().getFigure(x, y).move(x, y, x, (y - 2),
-							getPlayerDatas(), getGame().getAllFigures()));
+			assertTrue("Own pawn can move 2 forward in his first turn.",
+					getFigure(x, y)
+							.move(x, y, x, (y - 2), playerDatas, figures));
 
 			// UPDATES THE FIGURES, AMOUNTS THE TURN COUNTER
-			getGame().setFigure(x, (y - 2), getGame().getFigure(x, y));
-			getGame().setFigure(x, y, null);
-			getGame().getFigure(x, (y - 2)).setTurnCounter(
-					getGame().getFigure(x, (y - 2)).getTurnCounter() + 1);
+			setFigure(x, (y - 2), getFigure(x, y));
+			setFigure(x, y, null);
+			getFigure(x, (y - 2)).setTurnCounter(
+					getFigure(x, (y - 2)).getTurnCounter() + 1);
 
 		}
 
@@ -203,21 +199,20 @@ public class Figure_Move {
 		for (int x = 0; x < 8; x = x + 1) {
 
 			// UPDATES PLAYERDATAS
-			getPlayerDatas().setFromSelectedJButton(x + "." + y);
-			getPlayerDatas().setToSelectedJButton(x + "." + (y - 2));
+			playerDatas.setFromSelectedJButton(x + "." + y);
+			playerDatas.setToSelectedJButton(x + "." + (y - 2));
 
 			// EXECUTES THE MOVE --> RETURN VALUE HAS TO BE FALSE
-			assertFalse(
-					"Own pawn cannot move 2 forward in his second turn.",
-					getGame().getFigure(x, y).move(x, y, x, (y - 2),
-							getPlayerDatas(), getGame().getAllFigures()));
+			assertFalse("Own pawn cannot move 2 forward in his second turn.",
+					getFigure(x, y)
+							.move(x, y, x, (y - 2), playerDatas, figures));
 
 		}
 
 	}
 
 	/**
-	 * testPlayerDatasException() - Tests PlayerDatas-Exception
+	 * Tests PlayerDatas-Exception
 	 * 
 	 * @throws Exception
 	 *             Throws null pointer exception for DataBase | Figure[][] ==
@@ -227,13 +222,12 @@ public class Figure_Move {
 	public void testPlayerDatasException() throws Exception {
 
 		// EXECUTES THE MOVE --> Exception.NullPointerException
-		getGame().getFigure(3, 7).move(3, 7, 4, 6, null,
-				getGame().getAllFigures());
+		getFigure(3, 7).move(3, 7, 4, 6, null, figures);
 
 	}
 
 	/**
-	 * testFigureException() - Tests Figure[][]-Exception
+	 * Tests Figure[][]-Exception
 	 * 
 	 * @throws Exception
 	 *             Throws null pointer exception for DataBase | Figure[][] ==
@@ -243,7 +237,7 @@ public class Figure_Move {
 	public void testFigureException() throws Exception {
 
 		// EXECUTES THE MOVE --> Exception.NullPointerException
-		getGame().getFigure(3, 7).move(3, 7, 4, 6, getPlayerDatas(), null);
+		getFigure(3, 7).move(3, 7, 4, 6, playerDatas, null);
 
 	}
 
@@ -252,13 +246,13 @@ public class Figure_Move {
 	// -------------------------------------------------------------
 
 	/**
-	 * tearDown() - Unbinds the test datas
+	 * Unbinds the test datas
 	 */
 	@After
 	public void tearDown() {
 
-		setPlayerDatas(null);
-		getGame().setAllFigures(null);
+		playerDatas = null;
+		figures = null;
 
 	}
 
@@ -267,15 +261,126 @@ public class Figure_Move {
 	// -------------------------------------------------------------
 
 	/**
-	 * preparePlayerDatas() - Fill PlayerDatas with test datas
+	 * Fill PlayerDatas with test data
 	 */
 	private void preparePlayerDatas() {
 
 		// CREATES TESTERS
-		getPlayerDatas().setNamePlayer1("Tester 1");
-		getPlayerDatas().setNamePlayer2("Tester 2");
-		getPlayerDatas().setOnTurn("Tester 1");
-		getPlayerDatas().setColorPlayerOnTurn(Color.WHITE);
+		playerDatas.setNamePlayer1("Tester 1");
+		playerDatas.setNamePlayer2("Tester 2");
+		playerDatas.setOnTurn("Tester 1");
+		playerDatas.setColorPlayerOnTurn(Color.WHITE);
+
+	}
+
+	/**
+	 * Sets the figures to their default location.
+	 */
+	public void defaultSetUp() {
+
+		// -------------------------------------------------------------
+		// PUTS KINGS ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(3, 0, createKing(Color.BLACK));
+
+		setFigure(3, 7, createKing(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS QUEENS ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(4, 0, createQueen(Color.BLACK));
+
+		setFigure(4, 7, createQueen(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS BISHOPS ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(2, 0, createBishop(Color.BLACK));
+		setFigure(5, 0, createBishop(Color.BLACK));
+
+		setFigure(2, 7, createBishop(Color.WHITE));
+		setFigure(5, 7, createBishop(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS KNIGHT ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(1, 0, createKnight(Color.BLACK));
+		setFigure(6, 0, createKnight(Color.BLACK));
+
+		setFigure(1, 7, createKnight(Color.WHITE));
+		setFigure(6, 7, createKnight(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS ROOKS ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(0, 0, createRook(Color.BLACK));
+		setFigure(7, 0, createRook(Color.BLACK));
+
+		setFigure(0, 7, createRook(Color.WHITE));
+		setFigure(7, 7, createRook(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS PAWNS ON BOARD
+		// -------------------------------------------------------------
+
+		for (int x = 0; x < 8; x = x + 1) {
+
+			setFigure(x, 1, createPawn(Color.BLACK));
+
+			setFigure(x, 6, createPawn(Color.WHITE));
+
+		}
+
+	}
+
+	// -------------------------------------------------------------
+	// PRIVATE METHODS TO CREATE NEW FIGURES
+	// -------------------------------------------------------------
+
+	private King createKing(Color color) {
+
+		King newKing = new King(color);
+		return newKing;
+
+	}
+
+	private Queen createQueen(Color color) {
+
+		Queen newQueen = new Queen(color);
+		return newQueen;
+
+	}
+
+	private Bishop createBishop(Color color) {
+
+		Bishop newBishop = new Bishop(color);
+		return newBishop;
+
+	}
+
+	private Knight createKnight(Color color) {
+
+		Knight newKnight = new Knight(color);
+		return newKnight;
+
+	}
+
+	private Rook createRook(Color color) {
+
+		Rook newRook = new Rook(color);
+		return newRook;
+
+	}
+
+	private Pawn createPawn(Color color) {
+
+		Pawn newPawn = new Pawn(color);
+		return newPawn;
 
 	}
 

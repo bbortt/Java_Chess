@@ -1,9 +1,8 @@
 package dataBase;
 
-import gui.ChessBoard;
-
 import java.awt.event.WindowEvent;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -24,53 +23,34 @@ public class Timer {
 
 	private PlayerDatas playerDatas;
 	private JLabel label;
-
-	// -------------------------------------------------------------
-	// PUBLIC GETTERS AND SETTERS
-	// -------------------------------------------------------------
-
-	public PlayerDatas getPlayerDatas() {
-		return this.playerDatas;
-
-	}
-
-	public void setPlayerDatas(PlayerDatas playerDatas) {
-		this.playerDatas = playerDatas;
-
-	}
-
-	public JLabel getLabel() {
-		return label;
-
-	}
-
-	public void setLabel(JLabel label) {
-		this.label = label;
-
-	}
+	private JFrame mainFrame;
 
 	/**
 	 * Starts new asynchronous thread which runs the timer. Sleeps for one
 	 * second and counts timer -1. If time runs out, handles the event.
 	 * 
-	 * @param playerDatas
+	 * @param givenPlayerDatas
 	 *            Requires the PlayerDatas to actualize the timer
-	 * @param label
+	 * @param givenLabel
 	 *            Requires the main-label for JOptionPane.showMessageDialog
+	 * @param givenFrame
+	 *            Requires the main-frame for JOptionPane.showMessageDialog
 	 * */
-	public Timer(final PlayerDatas playerDatas, JLabel label) {
+	public Timer(final PlayerDatas givenPlayerDatas, JLabel givenJLabel,
+			JFrame givenFrame) {
 
-		setPlayerDatas(playerDatas);
-		setLabel(label);
+		playerDatas = givenPlayerDatas;
+		label = givenJLabel;
+		mainFrame = givenFrame;
 
 		// -------------------------------------------------------------
 		// IF TIME IS 0 --> NO TIME LIMIT
 		// -------------------------------------------------------------
 
-		if (getPlayerDatas().getTimePlayer1() == 0
-				&& getPlayerDatas().getTimePlayer2() == 0) {
+		if (playerDatas.getTimePlayer1() == 0
+				&& playerDatas.getTimePlayer2() == 0) {
 
-			getLabel().setText("");
+			label.setText("");
 			Thread.currentThread().interrupt();
 
 		} else {
@@ -101,16 +81,13 @@ public class Timer {
 						if (playerDatas.getTimePlayer1() <= 0
 								|| playerDatas.getTimePlayer2() <= 0) {
 
-							JOptionPane.showMessageDialog(
-									ChessBoard.getMainFrame(),
-									"Time run out!\n"
-											+ getPlayerDatas().getOnTurn()
+							JOptionPane.showMessageDialog(mainFrame,
+									"Time run out!\n" + playerDatas.getOnTurn()
 											+ " lost!", "Time run out",
 									JOptionPane.INFORMATION_MESSAGE);
 
-							ChessBoard.getMainFrame().dispatchEvent(
-									new WindowEvent(ChessBoard.getMainFrame(),
-											WindowEvent.WINDOW_CLOSING));
+							mainFrame.dispatchEvent(new WindowEvent(mainFrame,
+									WindowEvent.WINDOW_CLOSING));
 
 						}
 
@@ -148,19 +125,15 @@ public class Timer {
 								if (playerDatas.getOnTurn().equals(
 										playerDatas.getNamePlayer1())) {
 
-									getLabel().setText(
-											"Remaining time: "
-													+ playerDatas
-															.getTimePlayer1()
-													+ " seconds");
+									label.setText("Remaining time: "
+											+ playerDatas.getTimePlayer1()
+											+ " seconds");
 
 								} else {
 
-									getLabel().setText(
-											"Remaining time: "
-													+ playerDatas
-															.getTimePlayer2()
-													+ " seconds");
+									label.setText("Remaining time: "
+											+ playerDatas.getTimePlayer2()
+											+ " seconds");
 
 								}
 

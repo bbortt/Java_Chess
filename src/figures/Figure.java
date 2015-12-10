@@ -2,6 +2,8 @@ package figures;
 
 import java.awt.Color;
 
+import javax.swing.JFrame;
+
 import dataBase.PlayerDatas;
 
 /**
@@ -23,49 +25,59 @@ public abstract class Figure {
 	private int turnCounter;
 
 	// -------------------------------------------------------------
-	// PUBLIC GETTERS AND SETTERS
+	// REQUIRED GETTERS AND SETTERS
 	// -------------------------------------------------------------
 
+	/**
+	 * Returns the figures color
+	 * 
+	 * @return The figures color
+	 */
 	public Color getColor() {
+
 		return this.color;
 
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	/**
+	 * Sets the figures color
+	 * 
+	 * @param color
+	 *            Required to set the figures color, this can not be null
+	 * @throws Exception
+	 *             If no color was set
+	 */
+	public void setColor(Color color) throws Exception {
+
+		if (color == null) {
+
+			throw new Exception("No color given!");
+
+		} else {
+
+			this.color = color;
+
+		}
 
 	}
 
-	public int getMaxX() {
-
-		return this.maxX;
-
-	}
-
-	public void setMaxX(int maxX) {
-
-		this.maxX = maxX;
-
-	}
-
-	public int getMaxY() {
-
-		return this.maxY;
-
-	}
-
-	public void setMaxY(int maxY) {
-
-		this.maxY = maxY;
-
-	}
-
+	/**
+	 * Returns the figures count of moves
+	 * 
+	 * @return Counted moves as Integer
+	 */
 	public int getTurnCounter() {
 
 		return this.turnCounter;
 
 	}
 
+	/**
+	 * Sets the figures turn counter
+	 * 
+	 * @param turnCounter
+	 *            Required to set the turnCounter
+	 */
 	public void setTurnCounter(int turnCounter) {
 
 		this.turnCounter = turnCounter;
@@ -76,32 +88,35 @@ public abstract class Figure {
 	 * Actualizes data with current game informations, then checks if the step
 	 * is valid.
 	 * 
-	 * @param currentX
+	 * @param givenCurrentX
 	 *            The current x-coordinate (which the player selected)
-	 * @param currentY
+	 * @param givenCurrentY
 	 *            The current y-coordinate (which the player selected)
-	 * @param toX
+	 * @param givenToX
 	 *            The selected aim x-coordinate
-	 * @param toY
+	 * @param givenToY
 	 *            The selected aim y-coordinate
-	 * @param playerDatas
+	 * @param givenPlayerDatas
 	 *            Required the PlayerDatas to check color
-	 * @param figures
+	 * @param givenFigures
 	 *            Require actual figures positions
 	 * @throws Exception
 	 *             Throws null pointer exception for DataBase | Figure[][] ==
 	 *             null
 	 * @return Returns true if the move is valid
 	 */
-	public abstract Boolean move(int currentX, int currentY, int toX, int toY,
-			PlayerDatas playerDatas, Figure[][] figures) throws Exception;
+	public abstract Boolean move(int givenCurrentX, int givenCurrentY,
+			int givenToX, int givenToY, PlayerDatas givenPlayerDatas,
+			Figure[][] givenFigures) throws Exception;
 
 	/**
 	 * Called if the figure gets slain.
 	 * 
-	 * @param nameOfPlayer
+	 * @param givenNameOfPlayer
+	 *            Required for JOptionPane.showMessageDialog()
+	 * @param givenMainFrame
 	 *            Required for JOptionPane.showMessageDialog()
 	 */
-	public abstract void kill(String nameOfPlayer);
+	public abstract void kill(String givenNameOfPlayer, JFrame givenMainFrame);
 
 }

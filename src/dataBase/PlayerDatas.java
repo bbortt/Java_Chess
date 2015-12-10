@@ -7,6 +7,8 @@ import java.awt.Color;
  * any other class wants to know something about the players, it has to call a
  * getter of this class.
  * 
+ * ATTENTION: THIS IS A GETTER-AND-SETTER-ONLY CLASS! THE METHODS ARE NOT COMMENTED FURTHER!
+ * 
  * @author Timon Borter
  * 
  */

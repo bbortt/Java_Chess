@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import dataBase.PlayerDatas;
+import figures.Figure;
 
 /**
  * This is the GUI which shows the settings. It implements different methods
@@ -88,30 +89,33 @@ public class Settings extends JFrame {
 	// PUBLIC GETTERS AND SETTERS OF CLASS
 	// -------------------------------------------------------------
 
-	public PlayerDatas getPlayerDatas() {
-
-		return this.playerDatas;
-
-	}
-
-	public void setPlayerDatas(PlayerDatas playerDatas) {
-
-		this.playerDatas = playerDatas;
-
-	}
-
+	/**
+	 * Required to read the time sliders position
+	 * 
+	 * @return Time for each player
+	 */
 	public int getPositionTimeSlider() {
 
 		return (timeSlider.getValue());
 
 	}
 
+	/**
+	 * Required to read player one's name
+	 * 
+	 * @return Name player one
+	 */
 	public String getValueName1() {
 
 		return (fieldNamePlayer1.getText());
 
 	}
 
+	/**
+	 * Required to read player two's name
+	 * 
+	 * @return Name player two
+	 */
 	public String getValueName2() {
 
 		return (fieldNamePlayer2.getText());
@@ -121,16 +125,16 @@ public class Settings extends JFrame {
 	/**
 	 * The GUI for the settings.
 	 * 
-	 * @param playerDatas
+	 * @param givenPlayerDatas
 	 *            Requires PlayerDatas to save names and time
 	 */
-	public Settings(PlayerDatas playerDatas) {
+	public Settings(PlayerDatas givenPlayerDatas) {
 
 		// -------------------------------------------------------------
 		// SAVE THE NEW PLAYER DATAS (CREATED IN app.java)
 		// -------------------------------------------------------------
 
-		setPlayerDatas(playerDatas);
+		playerDatas = givenPlayerDatas;
 
 		// -------------------------------------------------------------
 		// CREATES THE FRAME
@@ -281,12 +285,12 @@ public class Settings extends JFrame {
 
 		if (!getValueName1().equals("") && !getValueName2().equals("")) {
 
-			getPlayerDatas().setNamePlayer1(getValueName1());
-			getPlayerDatas().setNamePlayer2(getValueName2());
-			getPlayerDatas().setTimePlayer1(getPositionTimeSlider() * 60);
-			getPlayerDatas().setTimePlayer2(getPositionTimeSlider() * 60);
-			getPlayerDatas().setOnTurn(getPlayerDatas().getNamePlayer1());
-			getPlayerDatas().setColorPlayerOnTurn(Color.WHITE);
+			playerDatas.setNamePlayer1(getValueName1());
+			playerDatas.setNamePlayer2(getValueName2());
+			playerDatas.setTimePlayer1(getPositionTimeSlider() * 60);
+			playerDatas.setTimePlayer2(getPositionTimeSlider() * 60);
+			playerDatas.setOnTurn(playerDatas.getNamePlayer1());
+			playerDatas.setColorPlayerOnTurn(Color.WHITE);
 
 			int response = JOptionPane
 					.showConfirmDialog(
@@ -298,7 +302,9 @@ public class Settings extends JFrame {
 
 			if (response == JOptionPane.YES_OPTION) {
 
-				chessBoard = new ChessBoard(getPlayerDatas());
+				Figure[][] figures = new Figure[8][8];
+
+				chessBoard = new ChessBoard(playerDatas, figures);
 				chessBoard.getGame().theTimer();
 				chessBoard.getGame().defaultSetUp();
 				new Thread(new Runnable() {

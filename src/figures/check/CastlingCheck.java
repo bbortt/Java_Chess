@@ -1,12 +1,12 @@
 package figures.check;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import main.Game;
 import dataBase.PlayerDatas;
 import figures.Figure;
-import gui.ChessBoard;
 
 /**
  * This class handles the castlings. They are done or undone right here.
@@ -26,109 +26,101 @@ public class CastlingCheck {
 	private Figure[][] figures;
 
 	private Game game;
+
+	private JFrame mainFrame;
+
 	private KingCheck kingCheck;
 
 	// -------------------------------------------------------------
-	// PUBLIC GETTERS AND SETTERS
+	// REQUIRED GETTER AND SETTER
 	// -------------------------------------------------------------
 
-	public PlayerDatas getPlayerDatas() {
-
-		return this.playerDatas;
-
-	}
-
-	public void setPlayerDatas(PlayerDatas playerDatas) {
-
-		this.playerDatas = playerDatas;
-
-	}
-
-	public JButton[][] getAllFields() {
-
-		return this.fields;
-
-	}
-
-	public void setAllFields(JButton[][] fields) {
-
-		this.fields = fields;
-
-	}
-
+	/**
+	 * Required to get a specific JButton
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @return The JButton at the specified coordinates
+	 */
 	public JButton getField(int x, int y) {
 
 		return this.fields[x][y];
 
 	}
 
+	/**
+	 * Required to set a specific JButton
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @param field
+	 *            The specific JButton
+	 */
 	public void setField(int x, int y, JButton field) {
 
 		this.fields[x][y] = field;
 
 	}
 
-	public Figure[][] getAllFigures() {
-
-		return this.figures;
-
-	}
-
-	public void setAllFigures(Figure[][] figures) {
-
-		this.figures = figures;
-
-	}
-
+	/**
+	 * Required to get a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @return The Figure at the specified coordinates
+	 */
 	public Figure getFigure(int x, int y) {
 
 		return this.figures[x][y];
 
 	}
 
+	/**
+	 * Required to set a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @param figure
+	 *            The specific Figure
+	 */
 	public void setFigure(int x, int y, Figure figure) {
 
 		this.figures[x][y] = figure;
 
 	}
 
-	public Game getGame() {
-
-		return this.game;
-
-	}
-
-	public void setGame(Game game) {
-
-		this.game = game;
-
-	}
-
-	public KingCheck getKingCheck() {
-
-		return this.kingCheck;
-
-	}
-
-	public void setKingCheck(KingCheck kingCheck) {
-
-		this.kingCheck = kingCheck;
-
-	}
-
 	/**
-	 * Sets game to the local variable and creates KingCheck.
+	 * Sets the local variables and creates KingCheck.
 	 * 
-	 * @param game
+	 * @param givenGame
 	 *            Requires an instance of the game
+	 * @param givenPlayerDatas
+	 *            Requires PlayerDatas to check colors
+	 * @param givenFields
+	 *            Requires fields to actualize the GUI
+	 * @param givenFigues
+	 *            Requires actual figures positions
+	 * @param givenMainFrame
+	 *            Requires JFrame for JOptionPane.showMessageDialog()
 	 */
-	public CastlingCheck(Game game) {
+	public CastlingCheck(Game givenGame, PlayerDatas givenPlayerDatas,
+			JButton[][] givenFields, Figure[][] givenFigures,
+			JFrame givenMainFrame) {
 
-		setGame(game);
-		setPlayerDatas(getGame().getPlayerDatas());
-		setAllFields(getGame().getAllFields());
-		setAllFigures(getGame().getAllFigures());
-		setKingCheck(new KingCheck());
+		game = givenGame;
+		playerDatas = givenPlayerDatas;
+		fields = givenFields;
+		figures = givenFigures;
+		mainFrame = givenMainFrame;
+		kingCheck = new KingCheck();
 
 	}
 
@@ -141,15 +133,13 @@ public class CastlingCheck {
 		// KING MUSTNT BE CHECKED
 		// -------------------------------------------------------------
 
-		if (!kingCheck.check(getPlayerDatas().getColorPlayerOnTurn(),
-				getAllFigures())) {
+		if (!kingCheck.check(playerDatas.getColorPlayerOnTurn(), figures)) {
 
 			// -------------------------------------------------------------
 			// FOR PLAYER 1
 			// -------------------------------------------------------------
 
-			if (getPlayerDatas().getOnTurn() == getPlayerDatas()
-					.getNamePlayer1()) {
+			if (playerDatas.getOnTurn() == playerDatas.getNamePlayer1()) {
 
 				// -------------------------------------------------------------
 				// CHECKS FOR figureS
@@ -165,12 +155,11 @@ public class CastlingCheck {
 					if ((getFigure(0, 7).getTurnCounter() == 0
 							&& String.valueOf(getFigure(0, 7)).contains(
 									"figures.figures.Rook") && getFigure(0, 7)
-							.getColor() == getPlayerDatas()
-							.getColorPlayerOnTurn())
+							.getColor() == playerDatas.getColorPlayerOnTurn())
 							&& (getFigure(3, 7).getTurnCounter() == 0
 									&& String.valueOf(getFigure(3, 7))
 											.contains("figures.figures.King") && getFigure(
-									3, 7).getColor() == getPlayerDatas()
+									3, 7).getColor() == playerDatas
 									.getColorPlayerOnTurn())) {
 
 						// -------------------------------------------------------------
@@ -188,21 +177,20 @@ public class CastlingCheck {
 						// REDRAWS THE BOARD
 						// -------------------------------------------------------------
 
-						getGame().clearBoard();
+						game.clearBoard();
 
 						// -------------------------------------------------------------
 						// UNDOES TURN IF KING IS CHECKED AFTER CASTLING
 						// -------------------------------------------------------------
 
-						if (kingCheck.check(getPlayerDatas()
-								.getColorPlayerOnTurn(), getAllFigures())) {
+						if (kingCheck.check(playerDatas.getColorPlayerOnTurn(),
+								figures)) {
 
 							// -------------------------------------------------------------
 							// INFORMS PLAYER
 							// -------------------------------------------------------------
 
-							JOptionPane.showMessageDialog(
-									ChessBoard.getMainFrame(),
+							JOptionPane.showMessageDialog(mainFrame,
 									"Incorrect move.\nCheck!",
 									"Incorrect move",
 									JOptionPane.INFORMATION_MESSAGE);
@@ -222,7 +210,7 @@ public class CastlingCheck {
 							// REDRAWS BOARD
 							// -------------------------------------------------------------
 
-							getGame().clearBoard();
+							game.clearBoard();
 
 						} else {
 
@@ -230,25 +218,23 @@ public class CastlingCheck {
 							// REQUIRED TO CONTINUE
 							// -------------------------------------------------------------
 
-							getPlayerDatas().setFromSelectedJButton("21.21");
-							getPlayerDatas().setToSelectedJButton("21.21");
+							playerDatas.setFromSelectedJButton("21.21");
+							playerDatas.setToSelectedJButton("21.21");
 
 						}
 
 					} else {
 
-						JOptionPane.showMessageDialog(
-								ChessBoard.getMainFrame(), "Incorrect move!",
-								"Incorrect move",
+						JOptionPane.showMessageDialog(mainFrame,
+								"Incorrect move!", "Incorrect move",
 								JOptionPane.INFORMATION_MESSAGE);
 
 					}
 
 				} else {
 
-					JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
-							"Incorrect move!", "Incorrect move",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(mainFrame, "Incorrect move!",
+							"Incorrect move", JOptionPane.INFORMATION_MESSAGE);
 
 				}
 
@@ -274,12 +260,11 @@ public class CastlingCheck {
 					if ((getFigure(0, 0).getTurnCounter() == 0
 							&& String.valueOf(getFigure(0, 0)).contains(
 									"figures.figures.Rook") && getFigure(0, 0)
-							.getColor() == getPlayerDatas()
-							.getColorPlayerOnTurn())
+							.getColor() == playerDatas.getColorPlayerOnTurn())
 							&& (getFigure(3, 0).getTurnCounter() == 0
 									&& String.valueOf(getFigure(3, 0))
 											.contains("figures.figures.King") && getFigure(
-									3, 0).getColor() == getPlayerDatas()
+									3, 0).getColor() == playerDatas
 									.getColorPlayerOnTurn())) {
 
 						// -------------------------------------------------------------
@@ -297,21 +282,20 @@ public class CastlingCheck {
 						// REDRAWS THE BOARD
 						// -------------------------------------------------------------
 
-						getGame().clearBoard();
+						game.clearBoard();
 
 						// -------------------------------------------------------------
 						// UNDOES TURN IF KING IS CHECKED AFTER CASTLING
 						// -------------------------------------------------------------
 
-						if (kingCheck.check(getPlayerDatas()
-								.getColorPlayerOnTurn(), getAllFigures())) {
+						if (kingCheck.check(playerDatas.getColorPlayerOnTurn(),
+								figures)) {
 
 							// -------------------------------------------------------------
 							// INFORMS PLAYER
 							// -------------------------------------------------------------
 
-							JOptionPane.showMessageDialog(
-									ChessBoard.getMainFrame(),
+							JOptionPane.showMessageDialog(mainFrame,
 									"Incorrect move.\nCheck!",
 									"Incorrect move",
 									JOptionPane.INFORMATION_MESSAGE);
@@ -331,7 +315,7 @@ public class CastlingCheck {
 							// REDRAWS BOARD
 							// -------------------------------------------------------------
 
-							getGame().clearBoard();
+							game.clearBoard();
 
 						} else {
 
@@ -339,25 +323,23 @@ public class CastlingCheck {
 							// REQUIRED TO CONTINUE
 							// -------------------------------------------------------------
 
-							getPlayerDatas().setFromSelectedJButton("21.21");
-							getPlayerDatas().setToSelectedJButton("21.21");
+							playerDatas.setFromSelectedJButton("21.21");
+							playerDatas.setToSelectedJButton("21.21");
 
 						}
 
 					} else {
 
-						JOptionPane.showMessageDialog(
-								ChessBoard.getMainFrame(), "Incorrect move!",
-								"Incorrect move",
+						JOptionPane.showMessageDialog(mainFrame,
+								"Incorrect move!", "Incorrect move",
 								JOptionPane.INFORMATION_MESSAGE);
 
 					}
 
 				} else {
 
-					JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
-							"Incorrect move!", "Incorrect move",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(mainFrame, "Incorrect move!",
+							"Incorrect move", JOptionPane.INFORMATION_MESSAGE);
 
 				}
 
@@ -365,9 +347,8 @@ public class CastlingCheck {
 
 		} else {
 
-			JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
-					"Castling not possible.\n" + getPlayerDatas().getOnTurn()
-							+ " checked!", "Check",
+			JOptionPane.showMessageDialog(mainFrame, "Castling not possible.\n"
+					+ playerDatas.getOnTurn() + " checked!", "Check",
 					JOptionPane.INFORMATION_MESSAGE);
 
 		}
@@ -383,15 +364,13 @@ public class CastlingCheck {
 		// KING MUSTNT BE CHECKED
 		// -------------------------------------------------------------
 
-		if (!kingCheck.check(getPlayerDatas().getColorPlayerOnTurn(),
-				getAllFigures())) {
+		if (!kingCheck.check(playerDatas.getColorPlayerOnTurn(), figures)) {
 
 			// -------------------------------------------------------------
 			// FOR PLAYER 1
 			// -------------------------------------------------------------
 
-			if (getPlayerDatas().getOnTurn() == getPlayerDatas()
-					.getNamePlayer1()) {
+			if (playerDatas.getOnTurn() == playerDatas.getNamePlayer1()) {
 
 				// -------------------------------------------------------------
 				// CHECKS FOR figureS
@@ -408,12 +387,11 @@ public class CastlingCheck {
 					if ((getFigure(7, 7).getTurnCounter() == 0
 							&& String.valueOf(getFigure(7, 7)).contains(
 									"figures.figures.Rook") && getFigure(7, 7)
-							.getColor() == getPlayerDatas()
-							.getColorPlayerOnTurn())
+							.getColor() == playerDatas.getColorPlayerOnTurn())
 							&& (getFigure(3, 7).getTurnCounter() == 0
 									&& String.valueOf(getFigure(3, 7))
 											.contains("figures.figures.King") && getFigure(
-									3, 7).getColor() == getPlayerDatas()
+									3, 7).getColor() == playerDatas
 									.getColorPlayerOnTurn())) {
 
 						// -------------------------------------------------------------
@@ -431,17 +409,16 @@ public class CastlingCheck {
 						// REDRAWS THE BOARD
 						// -------------------------------------------------------------
 
-						getGame().clearBoard();
+						game.clearBoard();
 
 						// -------------------------------------------------------------
 						// UNDOES TURN IF KING IS CHECKED AFTER CASTLING
 						// -------------------------------------------------------------
 
-						if (kingCheck.check(getPlayerDatas()
-								.getColorPlayerOnTurn(), getAllFigures())) {
+						if (kingCheck.check(playerDatas.getColorPlayerOnTurn(),
+								figures)) {
 
-							JOptionPane.showMessageDialog(
-									ChessBoard.getMainFrame(),
+							JOptionPane.showMessageDialog(mainFrame,
 									"Incorrect move.\nCheck!",
 									"Incorrect move",
 									JOptionPane.INFORMATION_MESSAGE);
@@ -461,7 +438,7 @@ public class CastlingCheck {
 							// REDRAWS BOARD
 							// -------------------------------------------------------------
 
-							getGame().clearBoard();
+							game.clearBoard();
 
 						} else {
 
@@ -469,25 +446,23 @@ public class CastlingCheck {
 							// REQUIRED TO CONTINUE
 							// -------------------------------------------------------------
 
-							getPlayerDatas().setFromSelectedJButton("21.21");
-							getPlayerDatas().setToSelectedJButton("21.21");
+							playerDatas.setFromSelectedJButton("21.21");
+							playerDatas.setToSelectedJButton("21.21");
 
 						}
 
 					} else {
 
-						JOptionPane.showMessageDialog(
-								ChessBoard.getMainFrame(), "Incorrect move!",
-								"Incorrect move",
+						JOptionPane.showMessageDialog(mainFrame,
+								"Incorrect move!", "Incorrect move",
 								JOptionPane.INFORMATION_MESSAGE);
 
 					}
 
 				} else {
 
-					JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
-							"Incorrect move!", "Incorrect move",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(mainFrame, "Incorrect move!",
+							"Incorrect move", JOptionPane.INFORMATION_MESSAGE);
 
 				}
 
@@ -514,12 +489,11 @@ public class CastlingCheck {
 					if ((getFigure(7, 0).getTurnCounter() == 0
 							&& String.valueOf(getFigure(7, 0)).contains(
 									"figures.figures.Rook") && getFigure(7, 0)
-							.getColor() == getPlayerDatas()
-							.getColorPlayerOnTurn())
+							.getColor() == playerDatas.getColorPlayerOnTurn())
 							&& (getFigure(3, 0).getTurnCounter() == 0
 									&& String.valueOf(getFigure(3, 0))
 											.contains("figures.figures.King") && getFigure(
-									3, 0).getColor() == getPlayerDatas()
+									3, 0).getColor() == playerDatas
 									.getColorPlayerOnTurn())) {
 
 						// -------------------------------------------------------------
@@ -537,21 +511,20 @@ public class CastlingCheck {
 						// REDRAWS THE BOARD
 						// -------------------------------------------------------------
 
-						getGame().clearBoard();
+						game.clearBoard();
 
 						// -------------------------------------------------------------
 						// UNDOES TURN IF KING IS CHECKED AFTER CASTLING
 						// -------------------------------------------------------------
 
-						if (kingCheck.check(getPlayerDatas()
-								.getColorPlayerOnTurn(), getAllFigures())) {
+						if (kingCheck.check(playerDatas.getColorPlayerOnTurn(),
+								figures)) {
 
 							// -------------------------------------------------------------
 							// INFORMS THE PLAYER
 							// -------------------------------------------------------------
 
-							JOptionPane.showMessageDialog(
-									ChessBoard.getMainFrame(),
+							JOptionPane.showMessageDialog(mainFrame,
 									"Incorrect move.\nCheck!",
 									"Incorrect move",
 									JOptionPane.INFORMATION_MESSAGE);
@@ -571,7 +544,7 @@ public class CastlingCheck {
 							// REDRAWS THE BOARD
 							// -------------------------------------------------------------
 
-							getGame().clearBoard();
+							game.clearBoard();
 
 						} else {
 
@@ -579,25 +552,23 @@ public class CastlingCheck {
 							// REQUIRED TO CONTINUE
 							// -------------------------------------------------------------
 
-							getPlayerDatas().setFromSelectedJButton("21.21");
-							getPlayerDatas().setToSelectedJButton("21.21");
+							playerDatas.setFromSelectedJButton("21.21");
+							playerDatas.setToSelectedJButton("21.21");
 
 						}
 
 					} else {
 
-						JOptionPane.showMessageDialog(
-								ChessBoard.getMainFrame(), "Incorrect move!",
-								"Incorrect move",
+						JOptionPane.showMessageDialog(mainFrame,
+								"Incorrect move!", "Incorrect move",
 								JOptionPane.INFORMATION_MESSAGE);
 
 					}
 
 				} else {
 
-					JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
-							"Incorrect move!", "Incorrect move",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(mainFrame, "Incorrect move!",
+							"Incorrect move", JOptionPane.INFORMATION_MESSAGE);
 
 				}
 
@@ -605,9 +576,8 @@ public class CastlingCheck {
 
 		} else {
 
-			JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
-					"Castling not possible.\n" + getPlayerDatas().getOnTurn()
-							+ " is checked!", "Check",
+			JOptionPane.showMessageDialog(mainFrame, "Castling not possible.\n"
+					+ playerDatas.getOnTurn() + " is checked!", "Check",
 					JOptionPane.INFORMATION_MESSAGE);
 
 		}

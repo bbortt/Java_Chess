@@ -1,19 +1,29 @@
+// -------------------------------------------------------------
+// -------------------------------------------------------------
+// THIS CLASS IS IN TESTING AND CAUSES FAILURES
+// -------------------------------------------------------------
+// -------------------------------------------------------------
+
 package JUnit_Tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import figures.check.CastlingCheck;
-import gui.ChessBoard;
 
 import java.awt.Color;
-
-import main.Game;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import dataBase.PlayerDatas;
+import figures.Figure;
+import figures.check.CastlingCheck;
+import figures.figures.Bishop;
+import figures.figures.King;
+import figures.figures.Knight;
+import figures.figures.Pawn;
+import figures.figures.Queen;
+import figures.figures.Rook;
 
 /**
  * 
@@ -22,56 +32,46 @@ import dataBase.PlayerDatas;
  */
 public class Game_rightCastling {
 
+	// -------------------------------------------------------------
+	// VARIABLES
+	// -------------------------------------------------------------
+
 	private PlayerDatas playerDatas;
-	private ChessBoard chessBoard;
-	private Game game;
+	private Figure[][] figures;
 	private CastlingCheck castlingCheck;
 
-	private PlayerDatas getPlayerDatas() {
+	// -------------------------------------------------------------
+	// PUBLIC GETTERS AND SETTERS
+	// -------------------------------------------------------------
 
-		return this.playerDatas;
+	/**
+	 * Required to get a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @return The Figure at the specified coordinates
+	 */
+	public Figure getFigure(int x, int y) {
 
-	}
-
-	private void setPlayerDatas(PlayerDatas playerDatas) {
-
-		this.playerDatas = playerDatas;
-
-	}
-
-	public ChessBoard getChessBoard() {
-
-		return this.chessBoard;
-
-	}
-
-	private void setChessBoard(ChessBoard chessBoard) {
-
-		this.chessBoard = chessBoard;
+		return this.figures[x][y];
 
 	}
 
-	private Game getGame() {
+	/**
+	 * Required to set a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @param figure
+	 *            The specific Figure
+	 */
+	public void setFigure(int x, int y, Figure figure) {
 
-		return this.game;
-
-	}
-
-	private void setGame(Game game) {
-
-		this.game = game;
-
-	}
-
-	public CastlingCheck getcCastlingCheck() {
-
-		return this.castlingCheck;
-
-	}
-
-	public void setCastlingCheck(CastlingCheck castlingCheck) {
-
-		this.castlingCheck = castlingCheck;
+		this.figures[x][y] = figure;
 
 	}
 
@@ -80,25 +80,21 @@ public class Game_rightCastling {
 	// -------------------------------------------------------------
 
 	/**
-	 * setUp() - Sets up the required datas
+	 * Sets up the required data
 	 */
 	@Before
 	public void setUp() {
 
-		setPlayerDatas(new PlayerDatas());
+		playerDatas = new PlayerDatas();
+		figures = new Figure[8][8];
 
 		// SETS UP DATAS
 		preparePlayerDatas();
-		setChessBoard(new ChessBoard(getPlayerDatas()));
-		getChessBoard().fillChessBoard();
+		defaultSetUp();
 
-		// STARTS THE GAME
-		setGame(new Game(getPlayerDatas(), getChessBoard().getAllFields(),
-				null, null, null));
-		getGame().defaultSetUp();
-
-		// INITALIZE CASTLING CLASS
-		setCastlingCheck(new CastlingCheck(getGame()));
+		// INITIALIZES CASTLING CLASS
+		castlingCheck = new CastlingCheck(null, playerDatas, null, figures,
+				null);
 
 	}
 
@@ -107,100 +103,113 @@ public class Game_rightCastling {
 	// -------------------------------------------------------------
 
 	/**
-	 * testValidCastling() - Tests a valid castling
+	 * Tests a valid castling
 	 */
 	@Test
 	public void testValidCastling() {
 
 		// REMOVE UNUSED FIGURES
-		// ROOK: System.out.println(getGame().getFigure(7, 7).getClass());
-		getGame().setFigure(6, 7, null);
-		getGame().setFigure(5, 7, null);
-		getGame().setFigure(4, 7, null);
-		// KING: System.out.println(getGame().getFigure(3, 7).getClass());
+		// ROOK: System.out.println(getFigure(7, 7).getClass());
+		setFigure(6, 7, null);
+		setFigure(5, 7, null);
+		setFigure(4, 7, null);
+		// KING: System.out.println(getFigure(3, 7).getClass());
 
 		// TRY TO RUN CASTLING
-		getcCastlingCheck().rightCastling();
+		castlingCheck.rightCastling();
 
 		// IF CASTLING WAS RUNNED, CHECKSUMMS ARE BOTH AT 20 --> THEY SHOULD
-		assertTrue("Castling could be executed.", getGame().getPlayerDatas()
-				.getFromSelectedJButton()[0] == 20
-				&& getGame().getPlayerDatas().getToSelectedJButton()[0] == 20);
+		assertTrue(
+				"Castling could be executed.",
+				playerDatas.getFromSelectedJButton()[0] == 20
+						&& playerDatas.getToSelectedJButton()[0] == 20);
 
 	}
 
 	/**
-	 * testColorChecking() - Tests if the color is checked
+	 * Tests if the color is checked
 	 */
 	@Test
 	public void testColorChecking() {
 
 		// REMOVE UNUSED FIGURES
-		// ROOK: System.out.println(getGame().getFigure(7, 7).getClass());
-		getGame().setFigure(6, 7, null);
-		getGame().setFigure(5, 7, null);
-		getGame().setFigure(4, 7, null);
-		// KING: System.out.println(getGame().getFigure(3, 7).getClass());
+		// ROOK: System.out.println(getFigure(7, 7).getClass());
+		setFigure(6, 7, null);
+		setFigure(5, 7, null);
+		setFigure(4, 7, null);
+		// KING: System.out.println(getFigure(3, 7).getClass());
 
 		// CHANGE THE ROOKS COLOR TO Color.BLACK
-		getGame().getFigure(7, 7).setColor(Color.BLACK);
+		try {
+
+			getFigure(0, 7).setColor(Color.BLACK);
+
+		} catch (Exception e) {
+
+			System.out.println(e.getMessage());
+			System.exit(1);
+
+		}
 
 		// TRY TO RUN CASTLING
-		getcCastlingCheck().rightCastling();
+		castlingCheck.rightCastling();
 
 		// IF CASTLING WAS RUNNED, CHECKSUMMS ARE BOTH AT 20 --> THEY SHOULDNT
-		assertFalse("Castling could not be executed.", getGame()
-				.getPlayerDatas().getFromSelectedJButton()[0] == 20
-				&& getGame().getPlayerDatas().getToSelectedJButton()[0] == 20);
+		assertFalse(
+				"Castling could not be executed.",
+				playerDatas.getFromSelectedJButton()[0] == 20
+						&& playerDatas.getToSelectedJButton()[0] == 20);
 
 	}
 
 	/**
-	 * testTurnCounter() - Tests if the turn counter is checked
+	 * Tests if the turn counter is checked
 	 */
 	@Test
 	public void testTurnCounter() {
 
 		// REMOVE UNUSED FIGURES
-		// ROOK: System.out.println(getGame().getFigure(7, 7).getClass());
-		getGame().setFigure(6, 7, null);
-		getGame().setFigure(5, 7, null);
-		getGame().setFigure(4, 7, null);
-		// KING: System.out.println(getGame().getFigure(3, 7).getClass());
+		// ROOK: System.out.println(getFigure(7, 7).getClass());
+		setFigure(6, 7, null);
+		setFigure(5, 7, null);
+		setFigure(4, 7, null);
+		// KING: System.out.println(getFigure(3, 7).getClass());
 
 		// SET TURN COUNTER OF ROOK TO 1
-		getGame().getFigure(7, 7).setTurnCounter(1);
+		getFigure(7, 7).setTurnCounter(1);
 
 		// TRY TO RUN CASTLING
-		getcCastlingCheck().rightCastling();
+		castlingCheck.rightCastling();
 
 		// IF CASTLING WAS RUNNED, CHECKSUMMS ARE BOTH AT 20 --> THEY SHOULDNT
-		assertFalse("Castling could not be executed.", getGame()
-				.getPlayerDatas().getFromSelectedJButton()[0] == 20
-				&& getGame().getPlayerDatas().getToSelectedJButton()[0] == 20);
+		assertFalse(
+				"Castling could not be executed.",
+				playerDatas.getFromSelectedJButton()[0] == 20
+						&& playerDatas.getToSelectedJButton()[0] == 20);
 
 	}
 
 	/**
-	 * testWayChecking() - Tests if figures in between are checked
+	 * Tests if figures in between are checked
 	 */
 	@Test
 	public void testWayChecking() {
 
 		// REMOVE UNUSED FIGURES
-		// ROOK: System.out.println(getGame().getFigure(7, 7).getClass());
-		// DONT REMOVE: getGame().setFigure(6, 7, null);
-		// DONT REMOVE: getGame().setFigure(6, 7, null);
-		getGame().setFigure(4, 7, null);
-		// KING: System.out.println(getGame().getFigure(3, 7).getClass());
+		// ROOK: System.out.println(getFigure(7, 7).getClass());
+		// DONT REMOVE: setFigure(6, 7, null);
+		// DONT REMOVE: setFigure(6, 7, null);
+		setFigure(4, 7, null);
+		// KING: System.out.println(getFigure(3, 7).getClass());
 
 		// TRY TO RUN CASTLING
-		getcCastlingCheck().rightCastling();
+		castlingCheck.rightCastling();
 
 		// IF CASTLING WAS RUNNED, CHECKSUMMS ARE BOTH AT 20 --> THEY SHOULDNT
-		assertFalse("Castling could not be executed.", getGame()
-				.getPlayerDatas().getFromSelectedJButton()[0] == 20
-				&& getGame().getPlayerDatas().getToSelectedJButton()[0] == 20);
+		assertFalse(
+				"Castling could not be executed.",
+				playerDatas.getFromSelectedJButton()[0] == 20
+						&& playerDatas.getToSelectedJButton()[0] == 20);
 
 	}
 
@@ -209,14 +218,13 @@ public class Game_rightCastling {
 	// -------------------------------------------------------------
 
 	/**
-	 * tearDown() - Unbinds the test data
+	 * Unbinds the test data
 	 */
 	@After
 	public void tearDown() {
 
-		setPlayerDatas(null);
-		getChessBoard().setAllFields(null);
-		getGame().setAllFigures(null);
+		playerDatas = null;
+		figures = null;
 
 	}
 
@@ -225,17 +233,126 @@ public class Game_rightCastling {
 	// -------------------------------------------------------------
 
 	/**
-	 * preparePlayerDatas() - Fill PlayerDatas with test datas
+	 * Fill PlayerDatas with test data
 	 */
 	private void preparePlayerDatas() {
 
 		// CREATES TESTERS
-		getPlayerDatas().setNamePlayer1("Tester 1");
-		getPlayerDatas().setNamePlayer2("Tester 2");
-		getPlayerDatas().setOnTurn("Tester 1");
-		getPlayerDatas().setColorPlayerOnTurn(Color.WHITE);
-		getPlayerDatas().setFromSelectedJButton("11.11");
-		getPlayerDatas().setToSelectedJButton("11.11");
+		playerDatas.setNamePlayer1("Tester 1");
+		playerDatas.setNamePlayer2("Tester 2");
+		playerDatas.setOnTurn("Tester 1");
+		playerDatas.setColorPlayerOnTurn(Color.WHITE);
+
+	}
+
+	/**
+	 * Sets the figures to their default location.
+	 */
+	public void defaultSetUp() {
+
+		// -------------------------------------------------------------
+		// PUTS KINGS ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(3, 0, createKing(Color.BLACK));
+
+		setFigure(3, 7, createKing(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS QUEENS ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(4, 0, createQueen(Color.BLACK));
+
+		setFigure(4, 7, createQueen(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS BISHOPS ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(2, 0, createBishop(Color.BLACK));
+		setFigure(5, 0, createBishop(Color.BLACK));
+
+		setFigure(2, 7, createBishop(Color.WHITE));
+		setFigure(5, 7, createBishop(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS KNIGHT ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(1, 0, createKnight(Color.BLACK));
+		setFigure(6, 0, createKnight(Color.BLACK));
+
+		setFigure(1, 7, createKnight(Color.WHITE));
+		setFigure(6, 7, createKnight(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS ROOKS ON BOARD
+		// -------------------------------------------------------------
+
+		setFigure(0, 0, createRook(Color.BLACK));
+		setFigure(7, 0, createRook(Color.BLACK));
+
+		setFigure(0, 7, createRook(Color.WHITE));
+		setFigure(7, 7, createRook(Color.WHITE));
+
+		// -------------------------------------------------------------
+		// PUTS PAWNS ON BOARD
+		// -------------------------------------------------------------
+
+		for (int x = 0; x < 8; x = x + 1) {
+
+			setFigure(x, 1, createPawn(Color.BLACK));
+
+			setFigure(x, 6, createPawn(Color.WHITE));
+
+		}
+
+	}
+
+	// -------------------------------------------------------------
+	// PRIVATE METHODS TO CREATE NEW FIGURES
+	// -------------------------------------------------------------
+
+	private King createKing(Color color) {
+
+		King newKing = new King(color);
+		return newKing;
+
+	}
+
+	private Queen createQueen(Color color) {
+
+		Queen newQueen = new Queen(color);
+		return newQueen;
+
+	}
+
+	private Bishop createBishop(Color color) {
+
+		Bishop newBishop = new Bishop(color);
+		return newBishop;
+
+	}
+
+	private Knight createKnight(Color color) {
+
+		Knight newKnight = new Knight(color);
+		return newKnight;
+
+	}
+
+	private Rook createRook(Color color) {
+
+		Rook newRook = new Rook(color);
+		return newRook;
+
+	}
+
+	private Pawn createPawn(Color color) {
+
+		Pawn newPawn = new Pawn(color);
+		return newPawn;
 
 	}
 

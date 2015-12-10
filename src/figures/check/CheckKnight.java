@@ -5,6 +5,7 @@ import figures.Figure;
 
 /**
  * This class checks whether a knights move is valid or not.
+ * 
  * @author Timon Borter
  * 
  */
@@ -18,130 +19,38 @@ public class CheckKnight {
 	private int currentY;
 	private int toX;
 	private int toY;
-	private int maxX;
-	private int maxY;
-	private int turnCounter;
 	private PlayerDatas playerDatas;
 	private Figure[][] figures;
 
 	// -------------------------------------------------------------
-	// PUBLIC SETTERS AND GETTERS
+	// REQUIRED GETTERS AND SETTERS
 	// -------------------------------------------------------------
 
-	public int getCurrentX() {
-
-		return currentX;
-
-	}
-
-	public void setCurrentX(int currentX) {
-
-		this.currentX = currentX;
-
-	}
-
-	public int getCurrentY() {
-
-		return currentY;
-
-	}
-
-	public void setCurrentY(int currentY) {
-
-		this.currentY = currentY;
-
-	}
-
-	public int getToX() {
-
-		return toX;
-
-	}
-
-	public void setToX(int toX) {
-
-		this.toX = toX;
-
-	}
-
-	public int getToY() {
-
-		return toY;
-
-	}
-
-	public void setToY(int toY) {
-
-		this.toY = toY;
-
-	}
-
-	public int getMaxX() {
-
-		return this.maxX;
-
-	}
-
-	public void setMaxX(int maxX) {
-
-		this.maxX = maxX;
-
-	}
-
-	public int getMaxY() {
-
-		return this.maxY;
-
-	}
-
-	public void setMaxY(int maxY) {
-
-		this.maxY = maxY;
-
-	}
-
-	public Figure[][] getAllFigures() {
-
-		return this.figures;
-
-	}
-
-	public void setAllFigures(Figure[][] figures) {
-
-		this.figures = figures;
-
-	}
-
-	public int getTurnCounter() {
-
-		return this.turnCounter;
-
-	}
-
-	public void setTurnCounter(int turnCounter) {
-
-		this.turnCounter = turnCounter;
-
-	}
-
-	public PlayerDatas getPlayerDatas() {
-
-		return this.playerDatas;
-
-	}
-
-	public void setPlayerDatas(PlayerDatas playerDatas) {
-
-		this.playerDatas = playerDatas;
-
-	}
-
+	/**
+	 * Required to get a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @return The Figure at the specified coordinates
+	 */
 	public Figure getFigure(int x, int y) {
 
 		return this.figures[x][y];
 
 	}
 
+	/**
+	 * Required to set a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @param figure
+	 *            The specific Figure
+	 */
 	public void setFigure(int x, int y, Figure figure) {
 
 		this.figures[x][y] = figure;
@@ -151,38 +60,28 @@ public class CheckKnight {
 	/**
 	 * Actualizes all variables with current game informations.
 	 * 
-	 * @param currentX
+	 * @param givenCurrentX
 	 *            The current x-coordinate (which the player selected)
-	 * @param currentY
+	 * @param givenCurrentY
 	 *            The current y-coordinate (which the player selected)
-	 * @param toX
+	 * @param givenToX
 	 *            The selected aim x-coordinate
-	 * @param toY
+	 * @param givenToY
 	 *            The selected aim y-coordinate
-	 * @param maxX
-	 *            The maximal x-coordinates to move
-	 * @param maxY
-	 *            The maximal y-coordinates to move
-	 * @param turnCounter
-	 *            Number of turns the figure moved
-	 * @param playerDatas
-	 *            Required the PlayerDatas to check color
-	 * @param figures
-	 *            Require actual figures positions
+	 * @param givenPlayerDatas
+	 *            Requires the PlayerDatas to check color
+	 * @param givenFigures
+	 *            Requires actual figures positions
 	 */
-	public void actualize(int currentX, int currentY, int toX, int toY,
-			int maxX, int maxY, int turnCounter, PlayerDatas playerDatas,
-			Figure[][] figures) {
+	public void actualize(int givenCurrentX, int givenCurrentY, int givenToX,
+			int givenToY, PlayerDatas givenPlayerDatas, Figure[][] givenFigures) {
 
-		setCurrentX(currentX);
-		setCurrentY(currentY);
-		setToX(toX);
-		setToY(toY);
-		setMaxX(maxX);
-		setMaxY(maxY);
-		setTurnCounter(turnCounter);
-		setPlayerDatas(playerDatas);
-		setAllFigures(figures);
+		currentX = givenCurrentX;
+		currentY = givenCurrentY;
+		toX = givenToX;
+		toY = givenToY;
+		playerDatas = givenPlayerDatas;
+		figures = givenFigures;
 
 	}
 
@@ -197,10 +96,9 @@ public class CheckKnight {
 		// CHECKS COLOR OF THE FIGURE TO MOVE
 		// -------------------------------------------------------------
 
-		if (getPlayerDatas().getOnTurn().equals(
-				getPlayerDatas().getNamePlayer1())) {
+		if (playerDatas.getOnTurn().equals(playerDatas.getNamePlayer1())) {
 
-			if (getFigure(getCurrentX(), getCurrentY()).getColor() != getPlayerDatas()
+			if (getFigure(currentX, currentY).getColor() != playerDatas
 					.getColorPlayerOnTurn()) {
 
 				return false;
@@ -209,7 +107,7 @@ public class CheckKnight {
 
 		} else {
 
-			if (getFigure(getCurrentX(), getCurrentY()).getColor() != getPlayerDatas()
+			if (getFigure(currentX, currentY).getColor() != playerDatas
 					.getColorPlayerOnTurn()) {
 
 				return false;
@@ -228,22 +126,22 @@ public class CheckKnight {
 
 		Boolean checkValue = false;
 
-		if (getToX() >= 0 && getToX() <= 7) {
+		if (toX >= 0 && toX <= 7) {
 
-			if (getToY() >= 0 && getToY() <= 7) {
+			if (toY >= 0 && toY <= 7) {
 
-				if (getFigure(getToX(), getToY()) == null
-						|| getFigure(getToX(), getToY()).getColor() != getPlayerDatas()
+				if (getFigure(toX, toY) == null
+						|| getFigure(toX, toY).getColor() != playerDatas
 								.getColorPlayerOnTurn()) {
 
-					if ((getToX() == getCurrentX() + 2 && getToY() == getCurrentY() + 1)
-							|| (getToX() == getCurrentX() + 2 && getToY() == getCurrentY() - 1)
-							|| (getToX() == getCurrentX() - 2 && getToY() == getCurrentY() + 1)
-							|| (getToX() == getCurrentX() - 2 && getToY() == getCurrentY() - 1)
-							|| (getToX() == getCurrentX() + 1 && getToY() == getCurrentY() + 2)
-							|| (getToX() == getCurrentX() + 1 && getToY() == getCurrentY() - 2)
-							|| (getToX() == getCurrentX() - 1 && getToY() == getCurrentY() + 2)
-							|| (getToX() == getCurrentX() - 1 && getToY() == getCurrentY() - 2)) {
+					if ((toX == currentX + 2 && toY == currentY + 1)
+							|| (toX == currentX + 2 && toY == currentY - 1)
+							|| (toX == currentX - 2 && toY == currentY + 1)
+							|| (toX == currentX - 2 && toY == currentY - 1)
+							|| (toX == currentX + 1 && toY == currentY + 2)
+							|| (toX == currentX + 1 && toY == currentY - 2)
+							|| (toX == currentX - 1 && toY == currentY + 2)
+							|| (toX == currentX - 1 && toY == currentY - 2)) {
 
 						checkValue = true;
 

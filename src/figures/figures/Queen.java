@@ -2,6 +2,8 @@ package figures.figures;
 
 import java.awt.Color;
 
+import javax.swing.JFrame;
+
 import dataBase.PlayerDatas;
 import figures.Figure;
 import figures.check.CheckCross;
@@ -18,32 +20,106 @@ import figures.check.CheckVertical;
 public class Queen extends Figure {
 
 	// -------------------------------------------------------------
-	// CONTENTS
+	// VARIABLES
 	// -------------------------------------------------------------
 
-	CheckCross checkCross;
-	CheckHorizontal checkHorizontal;
-	CheckVertical checkVertical;
+	private Color color;
+	private int maxX;
+	private int maxY;
+	private int turnCounter;
+	private CheckCross checkCross;
+	private CheckHorizontal checkHorizontal;
+	private CheckVertical checkVertical;
+
+	// -------------------------------------------------------------
+	// REQUIRED GETTERS AND SETTERS
+	// -------------------------------------------------------------
+
+	/**
+	 * Returns the figures color
+	 * 
+	 * @return The figures color
+	 */
+	public Color getColor() {
+
+		return this.color;
+
+	}
+
+	/**
+	 * Sets the figures color
+	 * 
+	 * @param color
+	 *            Required to set the figures color, this can not be null
+	 * @throws Exception
+	 *             If no color was set
+	 */
+	public void setColor(Color color) throws Exception {
+
+		if (color == null) {
+
+			throw new Exception("No color given!");
+
+		} else {
+
+			this.color = color;
+
+		}
+
+	}
+
+	/**
+	 * Returns the figures count of moves
+	 * 
+	 * @return Counted moves as Integer
+	 */
+	public int getTurnCounter() {
+
+		return this.turnCounter;
+
+	}
+
+	/**
+	 * Sets the figures turn counter
+	 * 
+	 * @param turnCounter
+	 *            Required to set the turnCounter
+	 */
+	public void setTurnCounter(int turnCounter) {
+
+		this.turnCounter = turnCounter;
+
+	}
 
 	/**
 	 * On creation sets color, range and turn counter.
 	 * 
-	 * @param color
+	 * @param givenColor
 	 *            Requires the figures color
 	 */
-	public Queen(Color color) {
+	public Queen(Color givenColor) {
 
 		// -------------------------------------------------------------
 		// FIGURES ATTRIBUTES
 		// -------------------------------------------------------------
 
-		setColor(color);
-		setMaxX(8);
-		setMaxY(8);
+		try {
+
+			setColor(givenColor);
+
+		} catch (Exception e) {
+
+			System.out.println(e.getMessage());
+			System.exit(1);
+
+		}
+
+		maxX = 8;
+		maxY = 8;
 		setTurnCounter(0);
 
 		// -------------------------------------------------------------
-		// FIGURES VALIDATION
+		// FIGURES VALIDATIONS
 		// -------------------------------------------------------------
 
 		checkCross = new CheckCross();
@@ -56,17 +132,17 @@ public class Queen extends Figure {
 	 * Actualizes data with current game informations, then checks if the step
 	 * is valid.
 	 * 
-	 * @param currentX
+	 * @param givenCurrentX
 	 *            The current x-coordinate (which the player selected)
-	 * @param currentY
+	 * @param givenCurrentY
 	 *            The current y-coordinate (which the player selected)
-	 * @param toX
+	 * @param givenToX
 	 *            The selected aim x-coordinate
-	 * @param toY
+	 * @param givenToY
 	 *            The selected aim y-coordinate
-	 * @param playerDatas
+	 * @param givenPlayerDatas
 	 *            Required the PlayerDatas to check color
-	 * @param figures
+	 * @param givenFigures
 	 *            Require actual figures positions
 	 * @throws Exception
 	 *             Throws null pointer exception for DataBase | Figure[][] ==
@@ -74,22 +150,23 @@ public class Queen extends Figure {
 	 * @return Returns true if the move is valid
 	 */
 	@Override
-	public Boolean move(int currentX, int currentY, int toX, int toY,
-			PlayerDatas playerDatas, Figure[][] figures) throws Exception {
+	public Boolean move(int givenCurrentX, int givenCurrentY, int givenToX,
+			int givenToY, PlayerDatas givenPlayerDatas, Figure[][] givenFigures)
+			throws Exception {
 
-		checkCross.actualize(currentX, currentY, toX, toY, getMaxX(),
-				getMaxY(), getTurnCounter(), playerDatas, figures);
-		checkHorizontal.actualize(currentX, currentY, toX, toY, getMaxX(),
-				getMaxY(), getTurnCounter(), playerDatas, figures);
-		checkVertical.actualize(currentX, currentY, toX, toY, getMaxX(),
-				getMaxY(), getTurnCounter(), playerDatas, figures);
+		checkCross.actualize(givenCurrentX, givenCurrentY, givenToX, givenToY,
+				maxX, maxY, givenPlayerDatas, givenFigures);
+		checkHorizontal.actualize(givenCurrentX, givenCurrentY, givenToX,
+				givenToY, maxX, givenPlayerDatas, givenFigures);
+		checkVertical.actualize(givenCurrentX, givenCurrentY, givenToX,
+				givenToY, maxY, givenPlayerDatas, givenFigures);
 
 		boolean returnValue = false;
 
 		try {
 
-			returnValue = checkCross.check() || checkHorizontal.check()
-					|| checkVertical.check();
+			returnValue = (checkCross.check() || checkHorizontal.check() || checkVertical
+					.check());
 
 		} catch (Exception e) {
 
@@ -104,10 +181,12 @@ public class Queen extends Figure {
 	/**
 	 * kill() - Called if the figure gets slain
 	 * 
-	 * @param nameOfPlayer
+	 * @param givenNameOfPlayer
+	 *            Required for JOptionPane.showMessageDialog()
+	 * @param givenMainFrame
 	 *            Required for JOptionPane.showMessageDialog()
 	 */
-	public void kill(String nameOfPlayer) {
+	public void kill(String givenNameOfPlayer, JFrame givenMainFrame) {
 
 		// DO NOTHING
 

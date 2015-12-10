@@ -3,6 +3,7 @@ package main;
 import java.awt.Color;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
@@ -17,7 +18,6 @@ import figures.figures.Knight;
 import figures.figures.Pawn;
 import figures.figures.Queen;
 import figures.figures.Rook;
-import gui.ChessBoard;
 
 /**
  * This class is the computer behind the game. It waits for user inputs, next
@@ -51,164 +51,107 @@ public class Game {
 
 	private KingCheck kingCheck;
 
+	private JFrame mainFrame;
+
 	// -------------------------------------------------------------
 	// PUBLIC GETTERS AND SETTERS
 	// -------------------------------------------------------------
 
-	public PlayerDatas getPlayerDatas() {
-
-		return this.playerDatas;
-
-	}
-
-	public void setPlayerDatas(PlayerDatas playerDatas) {
-
-		this.playerDatas = playerDatas;
-
-	}
-
-	public JLabel getLabelNamePlayer1() {
-
-		return labelNamePlayer1;
-
-	}
-
-	public void setLabelNamePlayer1(JLabel labelNamePlayer1) {
-
-		this.labelNamePlayer1 = labelNamePlayer1;
-
-	}
-
-	public JLabel getLabelTimeTillEnd() {
-
-		return labelTimeTillEnd;
-
-	}
-
-	public void setLabelTimeTillEnd(JLabel labelTimeTillEnd) {
-
-		this.labelTimeTillEnd = labelTimeTillEnd;
-
-	}
-
-	public JLabel getLabelNamePlayer2() {
-
-		return labelNamePlayer2;
-
-	}
-
-	public void setLabelNamePlayer2(JLabel labelNamePlayer2) {
-
-		this.labelNamePlayer2 = labelNamePlayer2;
-
-	}
-
-	public Figure getCopiedFigure() {
-
-		return copiedFigure;
-
-	}
-
-	public void setCopiedFigure(Figure copiedFigure) {
-
-		this.copiedFigure = copiedFigure;
-
-	}
-
-	public JButton[][] getAllFields() {
-
-		return this.fields;
-
-	}
-
-	public void setAllFields(JButton[][] fields) {
-
-		this.fields = fields;
-
-	}
-
+	/**
+	 * Required to get a specific JButton
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @return The JButton at the specified coordinates
+	 */
 	public JButton getField(int x, int y) {
 
 		return this.fields[x][y];
 
 	}
 
+	/**
+	 * Required to set a specific JButton
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @param field
+	 *            The specific JButton
+	 */
 	public void setField(int x, int y, JButton field) {
 
 		this.fields[x][y] = field;
 
 	}
 
-	public Figure[][] getAllFigures() {
-
-		return this.figures;
-
-	}
-
-	public void setAllFigures(Figure[][] figures) {
-
-		this.figures = figures;
-
-	}
-
+	/**
+	 * Required to get a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @return The Figure at the specified coordinates
+	 */
 	public Figure getFigure(int x, int y) {
 
 		return this.figures[x][y];
 
 	}
 
+	/**
+	 * Required to set a specific Figure
+	 * 
+	 * @param x
+	 *            The specific x-coordinate
+	 * @param y
+	 *            The specific y-coordinate
+	 * @param figure
+	 *            The specific Figure
+	 */
 	public void setFigure(int x, int y, Figure figure) {
 
 		this.figures[x][y] = figure;
 
 	}
 
-	public KingCheck getKingCheck() {
-
-		return this.kingCheck;
-
-	}
-
-	public void setKingCheck(KingCheck kingCheck) {
-
-		this.kingCheck = kingCheck;
-
-	}
-
 	/**
 	 * Starts a new game, this is not the GUI.
 	 * 
-	 * @param playerDatas
+	 * @param givenPlayerDatas
 	 *            Requires PlayerDatas to check the steps
-	 * @param fields
+	 * @param givenFields
 	 *            Requires fields to actualize the GUI in ChessBoard.java
-	 * @param labelNamePlayer1
+	 * @param givenFigures
+	 *            Requires figures to handle moves
+	 * @param givenLabelNamePlayer1
 	 *            Requires label to show or hide
-	 * @param labelTimeTillEnd
+	 * @param givenLabelTimeTillEnd
 	 *            Requires label to create the timer (Timer.java)
-	 * @param labelNamePlayer2
+	 * @param givenLabelNamePlayer2
 	 *            Requires label to show or hide
 	 */
-	public Game(PlayerDatas playerDatas, JButton[][] fields,
-			JLabel labelNamePlayer1, JLabel labelTimeTillEnd,
-			JLabel labelNamePlayer2) {
+	public Game(PlayerDatas givenPlayerDatas, JButton[][] givenFields,
+			Figure[][] givenFigures, JLabel givenLabelNamePlayer1,
+			JLabel givenLabelTimeTillEnd, JLabel givenLabelNamePlayer2,
+			JFrame givenMainFrame) {
 
 		// -------------------------------------------------------------
 		// SYNCHRONIZES LOCAL VARIABLES WITH ATTRIBUTES
 		// -------------------------------------------------------------
 
-		setPlayerDatas(playerDatas);
-		setAllFields(fields);
-		setLabelNamePlayer1(labelNamePlayer1);
-		setLabelTimeTillEnd(labelTimeTillEnd);
-		setLabelNamePlayer2(labelNamePlayer2);
-		setKingCheck(new KingCheck());
-
-		// -------------------------------------------------------------
-		// CREATES VIRTUAL CHESS BOARD
-		// -------------------------------------------------------------
-
-		setAllFigures(new Figure[8][8]);
+		playerDatas = givenPlayerDatas;
+		fields = givenFields;
+		figures = givenFigures;
+		labelNamePlayer1 = givenLabelNamePlayer1;
+		labelTimeTillEnd = givenLabelTimeTillEnd;
+		labelNamePlayer2 = givenLabelNamePlayer2;
+		kingCheck = new KingCheck();
+		mainFrame = givenMainFrame;
 
 	}
 
@@ -217,7 +160,7 @@ public class Game {
 	 */
 	public void theTimer() {
 
-		timer = new Timer(playerDatas, getLabelTimeTillEnd());
+		timer = new Timer(playerDatas, labelTimeTillEnd, mainFrame);
 
 	}
 
@@ -243,16 +186,15 @@ public class Game {
 			// WHO'S TURN IS IT? SHOWS NAME OF THIS PLAYER
 			// -------------------------------------------------------------
 
-			if (getPlayerDatas().getOnTurn().equals(
-					getPlayerDatas().getNamePlayer1())) {
+			if (playerDatas.getOnTurn().equals(playerDatas.getNamePlayer1())) {
 
-				getLabelNamePlayer1().show();
-				getLabelNamePlayer2().hide();
+				labelNamePlayer1.show();
+				labelNamePlayer2.hide();
 
 			} else {
 
-				getLabelNamePlayer2().show();
-				getLabelNamePlayer1().hide();
+				labelNamePlayer2.show();
+				labelNamePlayer1.hide();
 
 			}
 
@@ -260,9 +202,9 @@ public class Game {
 			// WAITS TILL PLAYER HAS BOTH BUTTONS CHOOSEN
 			// -------------------------------------------------------------
 
-			while ((getPlayerDatas().getFromSelectedJButton()[0] == 10 || getPlayerDatas()
+			while ((playerDatas.getFromSelectedJButton()[0] == 10 || playerDatas
 					.getToSelectedJButton()[0] == 10)
-					&& (getPlayerDatas().getFromSelectedJButton()[0] != 20 && getPlayerDatas()
+					&& (playerDatas.getFromSelectedJButton()[0] != 20 && playerDatas
 							.getToSelectedJButton()[0] != 20)) {
 
 				try {
@@ -281,8 +223,8 @@ public class Game {
 			// DOES A NORMAL TURN IF NO CASTLING WAS DONE
 			// -------------------------------------------------------------
 
-			if (getPlayerDatas().getFromSelectedJButton()[0] != 20
-					&& getPlayerDatas().getToSelectedJButton()[0] != 20) {
+			if (playerDatas.getFromSelectedJButton()[0] != 20
+					&& playerDatas.getToSelectedJButton()[0] != 20) {
 
 				// -------------------------------------------------------------
 				// CHECKS FOR CORRECT MOVE
@@ -291,56 +233,54 @@ public class Game {
 				// - CHECKS IF SOMEONES KING IS CHECKED
 				// -------------------------------------------------------------
 
-				if (getFigure(getPlayerDatas().getFromSelectedJButton()[0],
-						getPlayerDatas().getFromSelectedJButton()[1]) != null) {
+				if (getFigure(playerDatas.getFromSelectedJButton()[0],
+						playerDatas.getFromSelectedJButton()[1]) != null) {
 
 					try {
 
-						if (getFigure(
-								getPlayerDatas().getFromSelectedJButton()[0],
-								getPlayerDatas().getFromSelectedJButton()[1])
-								.move(getPlayerDatas().getFromSelectedJButton()[0],
-										getPlayerDatas()
-												.getFromSelectedJButton()[1],
-										getPlayerDatas().getToSelectedJButton()[0],
-										getPlayerDatas().getToSelectedJButton()[1],
-										playerDatas, figures)) {
+						if (getFigure(playerDatas.getFromSelectedJButton()[0],
+								playerDatas.getFromSelectedJButton()[1]).move(
+								playerDatas.getFromSelectedJButton()[0],
+								playerDatas.getFromSelectedJButton()[1],
+								playerDatas.getToSelectedJButton()[0],
+								playerDatas.getToSelectedJButton()[1],
+								playerDatas, figures)) {
 
 							// -------------------------------------------------------------
 							// AMOUNTS THE TURN COUNTER
 							// -------------------------------------------------------------
 
-							getFigure(
-									getPlayerDatas().getFromSelectedJButton()[0],
-									getPlayerDatas().getFromSelectedJButton()[1])
+							getFigure(playerDatas.getFromSelectedJButton()[0],
+									playerDatas.getFromSelectedJButton()[1])
 									.setTurnCounter(
 											getFigure(
-													getPlayerDatas()
+													playerDatas
 															.getFromSelectedJButton()[0],
-													getPlayerDatas()
+													playerDatas
 															.getFromSelectedJButton()[1])
 													.getTurnCounter() + 1);
 
-							if (getFigure(getPlayerDatas()
-									.getToSelectedJButton()[0],
-									getPlayerDatas().getToSelectedJButton()[1]) != null) {
+							if (getFigure(
+									playerDatas.getToSelectedJButton()[0],
+									playerDatas.getToSelectedJButton()[1]) != null) {
 
 								// -------------------------------------------------------------
 								// CALLS THE KILL METHOD
 								// -------------------------------------------------------------
 
 								getFigure(
-										getPlayerDatas().getToSelectedJButton()[0],
-										getPlayerDatas().getToSelectedJButton()[1])
-										.kill(getPlayerDatas().getOnTurn());
+										playerDatas.getToSelectedJButton()[0],
+										playerDatas.getToSelectedJButton()[1])
+										.kill(playerDatas.getOnTurn(),
+												mainFrame);
 
 								// -------------------------------------------------------------
 								// SAVES THE KILLED figure
 								// -------------------------------------------------------------
 
-								setCopiedFigure(getFigure(
-										getPlayerDatas().getToSelectedJButton()[0],
-										getPlayerDatas().getToSelectedJButton()[1]));
+								copiedFigure = figures[playerDatas
+										.getToSelectedJButton()[0]][playerDatas
+										.getToSelectedJButton()[1]];
 
 							}
 
@@ -349,22 +289,20 @@ public class Game {
 							// -------------------------------------------------------------
 
 							setFigure(
-									getPlayerDatas().getToSelectedJButton()[0],
-									getPlayerDatas().getToSelectedJButton()[1],
+									playerDatas.getToSelectedJButton()[0],
+									playerDatas.getToSelectedJButton()[1],
 									getFigure(
-											getPlayerDatas()
+											playerDatas
 													.getFromSelectedJButton()[0],
-											getPlayerDatas()
+											playerDatas
 													.getFromSelectedJButton()[1]));
 
-							setFigure(
-									getPlayerDatas().getFromSelectedJButton()[0],
-									getPlayerDatas().getFromSelectedJButton()[1],
+							setFigure(playerDatas.getFromSelectedJButton()[0],
+									playerDatas.getFromSelectedJButton()[1],
 									null);
 
-							getField(
-									getPlayerDatas().getFromSelectedJButton()[0],
-									getPlayerDatas().getFromSelectedJButton()[1])
+							getField(playerDatas.getFromSelectedJButton()[0],
+									playerDatas.getFromSelectedJButton()[1])
 									.setText(null);
 
 							// -------------------------------------------------------------
@@ -377,16 +315,16 @@ public class Game {
 							// UNDOES THE TURN IF KING IS CHECKED
 							// -------------------------------------------------------------
 
-							if (getKingCheck().check(getPlayerDatas()
-									.getColorPlayerOnTurn(), getAllFigures())) {
+							if (kingCheck
+									.check(playerDatas.getColorPlayerOnTurn(),
+											figures)) {
 
 								// -------------------------------------------------------------
 								// INFORMS THE PLAYER
 								// -------------------------------------------------------------
 
-								JOptionPane.showMessageDialog(
-										ChessBoard.getMainFrame(),
-										"Incorrect move!\nCheck!",
+								JOptionPane.showMessageDialog(mainFrame,
+										"Incorrect move!\nChecked!",
 										"Incorrect move",
 										JOptionPane.INFORMATION_MESSAGE);
 
@@ -395,37 +333,31 @@ public class Game {
 								// -------------------------------------------------------------
 
 								setFigure(
-										getPlayerDatas()
-												.getFromSelectedJButton()[0],
-										getPlayerDatas()
-												.getFromSelectedJButton()[1],
+										playerDatas.getFromSelectedJButton()[0],
+										playerDatas.getFromSelectedJButton()[1],
 										getFigure(
-												getPlayerDatas()
+												playerDatas
 														.getToSelectedJButton()[0],
-												getPlayerDatas()
+												playerDatas
 														.getToSelectedJButton()[1]));
 
-								if (getCopiedFigure() != null) {
+								if (copiedFigure != null) {
 
-									setFigure(getPlayerDatas()
-											.getToSelectedJButton()[0],
-											getPlayerDatas()
-													.getToSelectedJButton()[1],
-											getCopiedFigure());
+									setFigure(
+											playerDatas.getToSelectedJButton()[0],
+											playerDatas.getToSelectedJButton()[1],
+											copiedFigure);
 
 								} else {
 
-									setFigure(getPlayerDatas()
-											.getToSelectedJButton()[0],
-											getPlayerDatas()
-													.getToSelectedJButton()[1],
+									setFigure(
+											playerDatas.getToSelectedJButton()[0],
+											playerDatas.getToSelectedJButton()[1],
 											null);
 
 									getField(
-											getPlayerDatas()
-													.getToSelectedJButton()[0],
-											getPlayerDatas()
-													.getToSelectedJButton()[1])
+											playerDatas.getToSelectedJButton()[0],
+											playerDatas.getToSelectedJButton()[1])
 											.setText(null);
 
 								}
@@ -440,8 +372,7 @@ public class Game {
 							// IF MOVE IS NOT CORRECT
 							// -------------------------------------------------------------
 
-							JOptionPane.showMessageDialog(
-									ChessBoard.getMainFrame(),
+							JOptionPane.showMessageDialog(mainFrame,
 									"Incorrect move!", "Incorrect move",
 									JOptionPane.INFORMATION_MESSAGE);
 							continue;
@@ -450,8 +381,7 @@ public class Game {
 
 					} catch (Exception e) {
 
-						JOptionPane.showMessageDialog(
-								ChessBoard.getMainFrame(),
+						JOptionPane.showMessageDialog(mainFrame,
 								"Whoops, an error occured!\n" + e.getMessage()
 										+ "\nThe program will be closed.",
 								"Fatal Error", JOptionPane.INFORMATION_MESSAGE);
@@ -465,7 +395,7 @@ public class Game {
 					// IF NO figure IS CHOOSEN
 					// -------------------------------------------------------------
 
-					JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
+					JOptionPane.showMessageDialog(mainFrame,
 							"No figure choosen!", "Incorrect move",
 							JOptionPane.INFORMATION_MESSAGE);
 					continue;
@@ -478,21 +408,20 @@ public class Game {
 			// INFORMS THE OTHER PLAYER IF HE IS CHECKED NOW
 			// -------------------------------------------------------------
 
-			if (getPlayerDatas().getOnTurn().equals(
-					getPlayerDatas().getNamePlayer1())
-					&& getKingCheck().check(Color.BLACK, getAllFigures())) {
+			if (playerDatas.getOnTurn().equals(playerDatas.getNamePlayer1())
+					&& kingCheck.check(Color.BLACK, figures)) {
 
-				JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
-						getPlayerDatas().getNamePlayer2() + " checked!",
-						"Check", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(mainFrame,
+						playerDatas.getNamePlayer2() + " checked!", "Check",
+						JOptionPane.INFORMATION_MESSAGE);
 
-			} else if (getPlayerDatas().getOnTurn().equals(
-					getPlayerDatas().getNamePlayer2())
-					&& getKingCheck().check(Color.WHITE, getAllFigures())) {
+			} else if (playerDatas.getOnTurn().equals(
+					playerDatas.getNamePlayer2())
+					&& kingCheck.check(Color.WHITE, figures)) {
 
-				JOptionPane.showMessageDialog(ChessBoard.getMainFrame(),
-						getPlayerDatas().getNamePlayer1() + " checked!",
-						"Check", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(mainFrame,
+						playerDatas.getNamePlayer1() + " checked!", "Check",
+						JOptionPane.INFORMATION_MESSAGE);
 
 			}
 
@@ -501,18 +430,17 @@ public class Game {
 			// UPDATES COLOR OF CURRENT PLAYER
 			// -------------------------------------------------------------
 
-			if (getPlayerDatas().getOnTurn().equals(
-					getPlayerDatas().getNamePlayer1())) {
+			if (playerDatas.getOnTurn().equals(playerDatas.getNamePlayer1())) {
 
-				getPlayerDatas().setOnTurn(getPlayerDatas().getNamePlayer2());
+				playerDatas.setOnTurn(playerDatas.getNamePlayer2());
 
-				getPlayerDatas().setColorPlayerOnTurn(Color.BLACK);
+				playerDatas.setColorPlayerOnTurn(Color.BLACK);
 
 			} else {
 
-				getPlayerDatas().setOnTurn(getPlayerDatas().getNamePlayer1());
+				playerDatas.setOnTurn(playerDatas.getNamePlayer1());
 
-				getPlayerDatas().setColorPlayerOnTurn(Color.WHITE);
+				playerDatas.setColorPlayerOnTurn(Color.WHITE);
 
 			}
 
@@ -587,14 +515,14 @@ public class Game {
 	 */
 	public void resetPlayerDatas() {
 
-		getPlayerDatas().setFromSelectedJButton("11.11");
-		getPlayerDatas().setToSelectedJButton("11.11");
-		setCopiedFigure(null);
+		playerDatas.setFromSelectedJButton("11.11");
+		playerDatas.setToSelectedJButton("11.11");
+		copiedFigure = null;
 
 	}
 
 	/**
-	 * Sets the figures on their default location.
+	 * Sets the figures to their default location.
 	 */
 	public void defaultSetUp() {
 
